@@ -1,7 +1,4 @@
-Original App Design Project - README Template
-===
-
-# APP_NAME_HERE
+# Bug Tracker
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -11,16 +8,16 @@ Original App Design Project - README Template
 
 ## Overview
 ### Description
-[Description of your app]
+Tracks bugs or issues that an organization has. 
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
-- **Category:**
-- **Mobile:**
-- **Story:**
-- **Market:**
-- **Habit:**
-- **Scope:**
+- **Category:** Project Management
+- **Mobile:** This app would be developed for both desktop and mobile. The web application should be mobile responsive.
+- **Story:** Creates tickets and assigns them to users within an organization. Users should be able to modify and comment on tickets.
+- **Market:** Any organization that would need a bug or issue tracker to aid it in management.
+- **Habit:** Users could use this SaaS 24/7.
+- **Scope:** First I would create single organizations for users and all users could see all tickets for their respective organization. Later, I could add groups to an organization so users could only see tickets within their own group rather than all tickets of their organization.
 
 ## Product Spec
 
