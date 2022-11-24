@@ -25,13 +25,46 @@ Tracks bugs or issues that an organization has.
 
 **Required Must-have Stories**
 
-* [fill in your required user stories here]
-* ...
+* User can create a new account
+* User can login
+* User can reset their password
+* User can view all issues on the dashboard
+* User can create issues
+  * Includes: "Titles", "Description", "Deadline", "Assigned to", and "Status"
+* User can view other users' profiles
+* User can view and comment on issues
+* User can view issues' "Title", "Assigned to", "Deadline", "Assigned by", "Issued on", "Status", and "Actions" (for editing and deleting issues)
+* User can edit and delete their own comments on issues
+* User can search for issues
+* User can filter issues
+* User can change how many issues they want to display with a dropdown
+* User can view and edit their profile
+  * Checkbox - Receive email notifications
+  * Change password
+  * Username
+  * First and last name
+  * Display name dropdown: Email, Username, First and last name
+  * Address
+  * Phone
+  * Facebook link
+  * Twitter link
+  * LinkedIn link
+  * About me
+* Admin user can edit and delete issues
+* Admin user can access User Management page
+  * Invite new users by entering their email addresses
+  * Display all users and their roles of the organization
+* User can sign out
 
 **Optional Nice-to-have Stories**
 
-* [fill in your required user stories here]
-* ...
+* Data charts displaying statistics on issues
+* User can copy all issues
+* User can download all issues in an Excel sheet
+* User can download all issues in a PDF file
+* User can hide and reveal columns in the issue table
+* User can add attachments when creating a new issue
+* User can add a profile picture
 
 ### 2. Screen Archetypes
 
