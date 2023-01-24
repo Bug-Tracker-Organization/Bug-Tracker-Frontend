@@ -11,7 +11,7 @@
 Tracks bugs or issues that an organization has. 
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
+
 - **Category:** Project Management
 - **Mobile:** This app would be developed for both desktop and mobile. The web application should be mobile responsive.
 - **Story:** Creates tickets and assigns them to users within an organization. Users should be able to modify and comment on tickets.
