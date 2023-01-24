@@ -91,18 +91,22 @@ Tracks bugs or issues that an organization has.
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Profile
+* User Management
+* Sign Out
 
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* Home Page (NOT Signed In)
+   * Sign In
+   * Register
+* Home Page (Signed In)
+   * Edit Issue
+   * Delete Issue
+   * New Issue
+   * [Dropdown] Profile -> Profile Page -> Edit Profile Page
+   * [Dropdown] User Management -> User Management Page -> Check & Send Page
+   * [Dropdown] Sign Out -> Home Page (Signed Out)
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
