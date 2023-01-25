@@ -101,6 +101,7 @@ Tracks bugs or issues that an organization has.
    * Sign In
    * Register
 * Home Page (Signed In)
+   * Select Issue -> Issue Detail Page
    * Edit Issue
    * Delete Issue
    * New Issue
