@@ -110,14 +110,11 @@ Tracks bugs or issues that an organization has.
    * [Dropdown] Sign Out -> Home Page (Signed Out)
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
-<img src="wireframe-1.png" width=600>
-<img src="wireframe-2.png" width=600>
-<img src="wireframe-3.png" width=600>
+<img src="wireframe-1.png">
+<img src="wireframe-2.png">
+<img src="wireframe-3.png">
 
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
+## GIF Demo?
 
 ## Schema 
 [This section will be completed in Unit 9]
