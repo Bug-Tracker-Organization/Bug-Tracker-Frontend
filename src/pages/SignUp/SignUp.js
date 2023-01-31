@@ -1,7 +1,10 @@
+import NavBar from '../../components/NavBar/NavBar.js';
+
 export default function SignUp() {
   return (
     <>
-      Sign Up Example
+      <NavBar/>
+      <a href={`/`}>Home</a>
     </>
   );
 }

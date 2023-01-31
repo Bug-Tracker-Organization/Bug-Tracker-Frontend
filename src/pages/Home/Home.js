@@ -1,6 +1,9 @@
+import NavBar from '../../components/NavBar/NavBar.js';
+
 export default function Home() {
   return (
     <>
+    <NavBar/>
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
@@ -29,7 +32,7 @@ export default function Home() {
         <nav>
           <ul>
             <li>
-              <a href={`/contacts/1`}>Your Name</a>
+              <a href={`/sign-up`}>Sign Up</a>
             </li>
             <li>
               <a href={`/contacts/2`}>Your Friend</a>
