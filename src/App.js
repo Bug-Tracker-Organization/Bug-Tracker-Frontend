@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home/Home.js';
 import SignUp from './pages/SignUp/SignUp.js';
+import Register from './pages/Register/Register.js';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/sign-up",
     element: <SignUp/>,
+  },
+  {
+    path: "/register",
+    element: <Register/>,
   },
 ]);
 

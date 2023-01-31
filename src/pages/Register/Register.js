@@ -1,10 +1,10 @@
 import NavBar from '../../components/NavBar/NavBar.js';
 
-export default function SignUp() {
+export default function Home() {
   return (
     <>
-      <NavBar/>
-      Sign Up
+    <NavBar/>
+    Register Page
     </>
   );
 }
