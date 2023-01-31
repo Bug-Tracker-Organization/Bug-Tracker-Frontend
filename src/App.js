@@ -4,6 +4,7 @@ import Home from './pages/Home/Home.js';
 import SignIn from './pages/SignIn/SignIn.js';
 import Register from './pages/Register/Register.js';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword.js';
+import IssuesOverview from './pages/IssuesOverview/IssuesOverview';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPassword/>,
+  },
+  {
+    path: "/issues-overview",
+    element: <IssuesOverview/>,
   },
 ]);
 
