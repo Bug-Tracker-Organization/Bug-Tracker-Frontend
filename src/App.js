@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home/Home.js';
-import SignUp from './pages/SignUp/SignUp.js';
+import SignIn from './pages/SignIn/SignIn.js';
 import Register from './pages/Register/Register.js';
 import {
   createBrowserRouter,
@@ -14,8 +14,8 @@ const router = createBrowserRouter([
     element: <Home/>,
   },
   {
-    path: "/sign-up",
-    element: <SignUp/>,
+    path: "/sign-in",
+    element: <SignIn/>,
   },
   {
     path: "/register",

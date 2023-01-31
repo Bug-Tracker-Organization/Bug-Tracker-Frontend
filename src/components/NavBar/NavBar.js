@@ -24,12 +24,16 @@ export default function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link color="inherit" to={"/"}>Issue Manger</Link>
           </Typography>
-          <Button color="inherit">
-            <Link class='navbar' color="inherit" to={"/sign-up"}>Sign Up</Link>
-          </Button>
-          <Button color="inherit">
-            <Link class='navbar' color="inherit" to={"/register"}>Register</Link>
-          </Button>
+          <Link class='navbar' color="inherit" to={"/sign-in"}>
+            <Button color="inherit">
+              Sign in
+            </Button>
+          </Link>
+          <Link class='navbar' color="inherit" to={"/register"}>
+            <Button color="inherit">
+              Register
+            </Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>

@@ -32,7 +32,7 @@ export default function Home() {
         <nav>
           <ul>
             <li>
-              <a href={`/sign-up`}>Sign Up</a>
+              <a href={`/sign-in`}>Sign Up</a>
             </li>
             <li>
               <a href={`/contacts/2`}>Your Friend</a>
