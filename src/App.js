@@ -3,6 +3,7 @@ import './App.css';
 import Home from './pages/Home/Home.js';
 import SignIn from './pages/SignIn/SignIn.js';
 import Register from './pages/Register/Register.js';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword.js';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register/>,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword/>,
   },
 ]);
 
