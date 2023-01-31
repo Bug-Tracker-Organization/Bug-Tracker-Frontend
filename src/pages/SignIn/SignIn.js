@@ -36,7 +36,10 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMeCheckbox, setRememberMeCheckbox] = useState(false);
+  const [submitClicked, setSubmitClicked] = useState(false);
   const navigate = useNavigate();
+  const errorEmail = submitClicked && email === '';
+  const errorPassword = submitClicked && password === '';
 
   function handleOnChange(event) {
 
@@ -59,21 +62,25 @@ export default function SignUp() {
   }
 
   const handleSubmit = (event) => {
-    fetch('apiLink', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(getPOSTBody())
-    }).then(response => {
-      console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
-      navigate('/issues-overview', {state: null});
-    }).catch(err => {
-      alert('Sign in unsuccessful' );
-      console.log(err);
-    });
-    
+
+    if (email !== '' && password !== '') {
+      fetch('apiLink', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(getPOSTBody())
+      }).then(response => {
+        console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
+        //navigate('/issues-overview', {state: null});
+      }).catch(err => {
+        alert('Sign in unsuccessful' );
+        console.log(err);
+      });
+    }
+
+    setSubmitClicked(true);
     // Page will refresh and the submission will fail without preventDefault()
     event.preventDefault();
   };
@@ -120,6 +127,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  helperText={errorEmail ? "This field is required" : null}
+                  error={errorEmail}
                   onChange={handleOnChange}
                 />
               </Grid>
@@ -131,6 +140,8 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
+                  helperText={errorPassword ? "This field is required" : null}
+                  error={errorPassword}
                   autoComplete="new-password"
                   onChange={handleOnChange}
                 />
