@@ -9,3 +9,8 @@ a:link, a:visited, a:hover, a:active {
   width: 100%;
   z-index: 1;
 }
+
+.navbar-logo {
+  height: 18px;
+  width: 18px;
+}

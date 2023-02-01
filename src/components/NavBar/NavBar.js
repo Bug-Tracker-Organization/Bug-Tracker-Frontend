@@ -23,7 +23,7 @@ export default function NavBar() {
           >
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link color="inherit" to={"/"}>Issue Manager</Link>
+            <Link color="inherit" to={"/"}><img className="navbar-logo" src={require('../../assets/logo.png')} /> Issue Manager</Link>
           </Typography>
           <Link className='navbar' color="inherit" to={"/sign-in"}>
             <Button color="inherit">
