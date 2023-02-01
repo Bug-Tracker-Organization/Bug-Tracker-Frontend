@@ -32,7 +32,9 @@ const theme = createTheme();
 export default function ForgotPassword() {
   
   const [email, setEmail] = useState('');
+  const [submitClicked, setSubmitClicked] = useState(false);
   const navigate = useNavigate();
+  const errorEmail = submitClicked && email === '';
 
   function handleOnChange(event) {
 
@@ -49,21 +51,25 @@ export default function ForgotPassword() {
   }
 
   const handleSubmit = (event) => {
-    fetch('apiLink', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(getPOSTBody())
-    }).then(response => {
-      console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
-      navigate('/sign-in', {state: null});
-    }).catch(err => {
-      alert('Submission unsuccessful');
-      console.log(err);
-    });
 
+    if (email !== '') {
+      fetch('apiLink', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(getPOSTBody())
+      }).then(response => {
+        console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
+        navigate('/issues-overview', {state: null});
+      }).catch(err => {
+        alert('Sign in unsuccessful' );
+        console.log(err);
+      });
+    }
+
+    setSubmitClicked(true);
     // Page will refresh and the submission will fail without preventDefault()
     event.preventDefault();
   };
@@ -113,6 +119,8 @@ export default function ForgotPassword() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  helperText={errorEmail ? "This field is required" : null}
+                  error={errorEmail}
                   onChange={handleOnChange}
                 />
               </Grid>
