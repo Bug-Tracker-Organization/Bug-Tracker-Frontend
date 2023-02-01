@@ -41,12 +41,8 @@ export default function Home() {
           </Grid>
           <Grid key={0} item>
             <Container
-              sx={{
-                height: 500,
-                width: 400,
-              }}
             >
-              IMAGE HERE
+              <img src={require('../../assets/logo.png')} />
             </Container>
           </Grid>
         </Grid>
