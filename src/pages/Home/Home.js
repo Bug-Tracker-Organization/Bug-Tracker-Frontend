@@ -1,46 +1,57 @@
+import * as React from 'react';
 import NavBar from '../../components/NavBar/NavBar.js';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { Link } from "react-router-dom";
 
 export default function Home() {
+
   return (
     <>
     <NavBar/>
-      <div id="sidebar">
-        <h1>React Router Contacts</h1>
-        <div>
-          <form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search contacts"
-              placeholder="Search"
-              type="search"
-              name="q"
-            />
-            <div
-              id="search-spinner"
-              aria-hidden
-              hidden={true}
-            />
-            <div
-              className="sr-only"
-              aria-live="polite"
-            ></div>
-          </form>
-          <form method="post">
-            <button type="submit">New</button>
-          </form>
-        </div>
-        <nav>
-          <ul>
-            <li>
-              <a href={`/sign-in`}>Sign Up</a>
-            </li>
-            <li>
-              <a href={`/contacts/2`}>Your Friend</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div id="detail"></div>
+    <Grid sx={{ flexGrow: 1, marginTop: 10, }} container spacing={2}>
+      <Grid item xs={12}>
+        <Grid container justifyContent="center" spacing={2}>
+          <Grid key={1} item>
+            <Container
+                sx={{
+                  height: 500,
+                  width: 400,
+                }}
+              >
+              <Typography variant="h3" component="div" sx={{ flexGrow: 1, marginTop: 10, marginBottom: 2 }}>
+                Issue Manager
+              </Typography>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginBottom: 2  }}>
+                This is a web application built with the MERN stack.
+              </Typography>
+              <Link className='navbar' color="inherit" to={"/sign-in"}>
+                <Button variant="contained" sx={{ flexGrow: 1, marginRight: 2  }}>
+                  Sign in
+                </Button>
+              </Link>
+              <Link className='navbar' color="inherit" to={"/register"}>
+                <Button variant="outlined">
+                  Register
+                </Button>
+              </Link>
+            </Container>
+          </Grid>
+          <Grid key={0} item>
+            <Container
+              sx={{
+                height: 500,
+                width: 400,
+              }}
+            >
+              IMAGE HERE
+            </Container>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
     </>
   );
 }
