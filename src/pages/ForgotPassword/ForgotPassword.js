@@ -1,16 +1,16 @@
 import * as React from 'react';
+import { useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar.js';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
 
 // Template source: https://github.com/mui/material-ui/blob/v5.11.6/docs/data/material/getting-started/templates/sign-up/SignUp.js
 
@@ -30,14 +30,57 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function ForgotPassword() {
+  
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  function handleOnChange(event) {
+
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+
+    switch(eventName) {
+      case 'email':
+        setEmail(eventValue);
+        break;
+      default:
+        console.log('Could not read eventName');
+    }
+  }
+
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    fetch('apiLink', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(getPOSTBody())
+    }).then(response => {
+      console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
+      navigate('/sign-in', {state: null});
+    }).catch(err => {
+      alert('Submission unsuccessful');
+      console.log(err);
     });
+
+    // Page will refresh and the submission will fail without preventDefault()
+    event.preventDefault();
   };
+
+  function getPOSTBody() {
+    // Type check all inputs
+    // If any type is incorrect, make the value null
+    const emailForBody = isString(email) ? email : null;
+
+    return {
+      email: emailForBody,
+    }
+  }
+
+  function isString(value) {
+    return (typeof value === 'string' || value instanceof String);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -70,6 +113,7 @@ export default function ForgotPassword() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={handleOnChange}
                 />
               </Grid>
             </Grid>

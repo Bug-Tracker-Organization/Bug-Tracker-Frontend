@@ -4,8 +4,6 @@ import NavBar from '../../components/NavBar/NavBar.js';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -80,7 +78,7 @@ export default function Register() {
         console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
         navigate('/issues-overview', {state: null});
       }).catch(err => {
-        alert('Sign in unsuccessful' );
+        alert('Submission unsuccessful');
         console.log(err);
       });
     }

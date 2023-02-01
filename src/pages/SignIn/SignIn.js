@@ -75,7 +75,7 @@ export default function SignUp() {
         console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
         navigate('/issues-overview', {state: null});
       }).catch(err => {
-        alert('Sign in unsuccessful' );
+        alert('Sign in unsuccessful');
         console.log(err);
       });
     }
