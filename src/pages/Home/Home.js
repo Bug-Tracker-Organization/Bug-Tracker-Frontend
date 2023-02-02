@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <>
-    <NavBar/>
+    <NavBar userStatus={false}/>
     <Grid sx={{ flexGrow: 1, marginTop: 10, }} container spacing={2}>
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={2}>

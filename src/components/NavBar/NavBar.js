@@ -17,9 +17,8 @@ import Logout from '@mui/icons-material/Logout';
 import { blue } from '@mui/material/colors';
 import { Link } from 'react-router-dom';
 
-export default function NavBar() {
+export default function NavBar(props) {
 
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userFirstNameLetter, setUserFirstNameLetter] = useState('');
   const [email, setEmail] = useState('');
 
@@ -48,7 +47,7 @@ export default function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link color="inherit" to={"/"}><img className="navbar-logo" src={require('../../assets/logo.png')} /> Issue Manager</Link>
           </Typography>
-          {!userLoggedIn ? <>
+          {!props.userStatus ? <>
             <Link className='navbar' color="inherit" to={"/sign-in"}>
               <Button color="inherit">
                 Sign in
@@ -59,7 +58,8 @@ export default function NavBar() {
                 Register
               </Button>
             </Link>
-            </> :
+            </> 
+            :
             <React.Fragment>
               <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 <Tooltip title="Account settings">
