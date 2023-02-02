@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import NavBar from '../../components/NavBar/NavBar.js';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -104,7 +103,6 @@ export default function SignIn(props) {
 
   return (
     <ThemeProvider theme={theme}>
-    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

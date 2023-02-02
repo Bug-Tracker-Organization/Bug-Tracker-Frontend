@@ -34,21 +34,49 @@ function App() {
     },
     {
       path: "/sign-in",
-      element: <SignIn isUserLoggedIn={isUserLoggedIn}
-        onUserLoginStatusChange={handleUserLoggedInChange}
-      />,
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <SignIn 
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />,
+        </>,
     },
     {
       path: "/register",
-      element: <Register isUserLoggedIn={isUserLoggedIn}/>,
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <Register/>,
+        </>,
     },
     {
       path: "/forgot-password",
-      element: <ForgotPassword isUserLoggedIn={isUserLoggedIn}/>,
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <ForgotPassword/>,
+        </>,
     },
     {
       path: "/issues-overview",
-      element: <IssuesOverview isUserLoggedIn={isUserLoggedIn}/>,
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <IssuesOverview/>,
+        </>,
     },
   ]);
 
