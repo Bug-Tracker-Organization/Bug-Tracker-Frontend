@@ -1,9 +1,9 @@
 import NavBar from '../../components/NavBar/NavBar.js';
 
-export default function IssuesOverview() {
+export default function IssuesOverview(props) {
   return (
     <>
-    <NavBar/>
+    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
     Issues Overview page
       <div id="sidebar">
         <h1>React Router Contacts</h1>

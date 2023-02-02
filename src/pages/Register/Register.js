@@ -29,7 +29,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Register() {
+export default function Register(props) {
 
   const [organization, setOrganization] = useState('');
   const [email, setEmail] = useState('');
@@ -108,7 +108,7 @@ export default function Register() {
 
   return (
     <ThemeProvider theme={theme}>
-    <NavBar/>
+    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

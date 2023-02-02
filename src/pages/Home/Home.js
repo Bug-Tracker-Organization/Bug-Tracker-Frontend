@@ -6,11 +6,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 
-export default function Home() {
+export default function Home(props) {
 
   return (
     <>
-    <NavBar userStatus={false}/>
+    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
     <Grid sx={{ flexGrow: 1, marginTop: 10, }} container spacing={2}>
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={2}>

@@ -29,7 +29,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function ForgotPassword() {
+export default function ForgotPassword(props) {
   
   const [email, setEmail] = useState('');
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -90,7 +90,7 @@ export default function ForgotPassword() {
 
   return (
     <ThemeProvider theme={theme}>
-    <NavBar/>
+    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

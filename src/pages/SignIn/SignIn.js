@@ -31,7 +31,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignIn(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,6 +74,7 @@ export default function SignUp() {
       }).then(response => {
         console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
         navigate('/issues-overview', {state: null});
+        props.onUserLoginStatusChange(false);
       }).catch(err => {
         alert('Sign in unsuccessful');
         console.log(err);
@@ -103,7 +104,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
-    <NavBar/>
+    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

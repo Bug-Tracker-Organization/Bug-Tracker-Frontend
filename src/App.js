@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 import Home from './pages/Home/Home.js';
 import SignIn from './pages/SignIn/SignIn.js';
 import Register from './pages/Register/Register.js';
@@ -10,30 +11,39 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home/>,
-  },
-  {
-    path: "/sign-in",
-    element: <SignIn/>,
-  },
-  {
-    path: "/register",
-    element: <Register/>,
-  },
-  {
-    path: "/forgot-password",
-    element: <ForgotPassword/>,
-  },
-  {
-    path: "/issues-overview",
-    element: <IssuesOverview/>,
-  },
-]);
-
 function App() {
+  
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  function handleUserLoggedInChange(userLoggedIn) {
+    setIsUserLoggedIn(!isUserLoggedIn);
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home isUserLoggedIn={isUserLoggedIn} />,
+    },
+    {
+      path: "/sign-in",
+      element: <SignIn isUserLoggedIn={isUserLoggedIn}
+        onUserLoginStatusChange={handleUserLoggedInChange}
+      />,
+    },
+    {
+      path: "/register",
+      element: <Register isUserLoggedIn={isUserLoggedIn}/>,
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword isUserLoggedIn={isUserLoggedIn}/>,
+    },
+    {
+      path: "/issues-overview",
+      element: <IssuesOverview isUserLoggedIn={isUserLoggedIn}/>,
+    },
+  ]);
+
   return (
     <RouterProvider router={router} />
   );

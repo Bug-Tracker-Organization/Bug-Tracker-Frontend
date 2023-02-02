@@ -47,7 +47,7 @@ export default function NavBar(props) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link color="inherit" to={"/"}><img className="navbar-logo" src={require('../../assets/logo.png')} /> Issue Manager</Link>
           </Typography>
-          {!props.userStatus ? <>
+          {!props.isUserLoggedIn ? <>
             <Link className='navbar' color="inherit" to={"/sign-in"}>
               <Button color="inherit">
                 Sign in
