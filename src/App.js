@@ -8,7 +8,7 @@ import IssuesOverview from './pages/IssuesOverview/IssuesOverview';
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
