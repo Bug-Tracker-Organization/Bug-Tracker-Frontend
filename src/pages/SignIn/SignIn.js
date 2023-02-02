@@ -74,7 +74,7 @@ export default function SignIn(props) {
       }).then(response => {
         console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
         navigate('/issues-overview', {state: null});
-        props.onUserLoginStatusChange(false);
+        props.onUserLoginStatusChange(true);
       }).catch(err => {
         alert('Sign in unsuccessful');
         console.log(err);

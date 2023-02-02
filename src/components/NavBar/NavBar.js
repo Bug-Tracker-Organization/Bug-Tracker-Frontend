@@ -31,6 +31,11 @@ export default function NavBar(props) {
     setAnchorEl(null);
   };
 
+  function handleLogOutButton() {
+    props.onUserLoginStatusChange(false);
+    setAnchorEl(null);
+  }
+
   return (
     <>
     <Box className="sticky-nav" sx={{ flexGrow: 1, }}>
@@ -122,7 +127,7 @@ export default function NavBar(props) {
                   <Avatar /> User Management
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleLogOutButton}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>

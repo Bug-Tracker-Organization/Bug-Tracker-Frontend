@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+import NavBar from './components/NavBar/NavBar.js';
 import Home from './pages/Home/Home.js';
 import SignIn from './pages/SignIn/SignIn.js';
 import Register from './pages/Register/Register.js';
@@ -16,13 +17,20 @@ function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   function handleUserLoggedInChange(userLoggedIn) {
-    setIsUserLoggedIn(!isUserLoggedIn);
+    setIsUserLoggedIn(userLoggedIn);
   }
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home isUserLoggedIn={isUserLoggedIn} />,
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <Home/> 
+        </>,
     },
     {
       path: "/sign-in",

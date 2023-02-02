@@ -1,5 +1,4 @@
 import * as React from 'react';
-import NavBar from '../../components/NavBar/NavBar.js';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -10,7 +9,6 @@ export default function Home(props) {
 
   return (
     <>
-    <NavBar isUserLoggedIn={props.isUserLoggedIn}/>
     <Grid sx={{ flexGrow: 1, marginTop: 10, }} container spacing={2}>
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={2}>
