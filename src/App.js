@@ -49,6 +49,7 @@ function App() {
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
           <SignIn 
+            isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
         </>,
@@ -61,7 +62,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <Register/>
+          <Register isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
     {
@@ -72,7 +73,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <ForgotPassword/>
+          <ForgotPassword isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
     {

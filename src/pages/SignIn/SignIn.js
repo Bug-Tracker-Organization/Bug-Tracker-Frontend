@@ -40,6 +40,10 @@ export default function SignIn(props) {
   const errorEmail = submitClicked && email === '';
   const errorPassword = submitClicked && password === '';
 
+  if (props.isUserLoggedIn) {
+    navigate('/issues-overview', {state: null});
+  }
+
   function handleOnChange(event) {
 
     const eventName = event.target.name;

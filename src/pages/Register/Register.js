@@ -41,6 +41,10 @@ export default function Register(props) {
   const errorPassword = submitClicked && password === '';
   const errorRepeatPassword = submitClicked && repeatPassword === '';
 
+  if (props.isUserLoggedIn) {
+    navigate('/issues-overview', {state: null});
+  }
+
   function handleOnChange(event) {
 
     const eventName = event.target.name;

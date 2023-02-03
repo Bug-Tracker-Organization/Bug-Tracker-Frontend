@@ -35,6 +35,10 @@ export default function ForgotPassword(props) {
   const navigate = useNavigate();
   const errorEmail = submitClicked && email === '';
 
+  if (props.isUserLoggedIn) {
+    navigate('/issues-overview', {state: null});
+  }
+
   function handleOnChange(event) {
 
     const eventName = event.target.name;
