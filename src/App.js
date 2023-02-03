@@ -84,7 +84,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <IssuesOverview/>
+          <IssuesOverview isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
     {
@@ -95,7 +95,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <EditIssue/>
+          <EditIssue isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
     {
@@ -106,7 +106,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <IssueDetail/>
+          <IssueDetail isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
   ]);
