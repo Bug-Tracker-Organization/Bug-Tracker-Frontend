@@ -37,7 +37,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <Home/> 
+          <Home isUserLoggedIn={isUserLoggedIn}/> 
         </>,
     },
     {
