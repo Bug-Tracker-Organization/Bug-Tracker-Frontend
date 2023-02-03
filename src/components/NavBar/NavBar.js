@@ -15,12 +15,13 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { blue } from '@mui/material/colors';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function NavBar(props) {
 
   const [userFirstNameLetter, setUserFirstNameLetter] = useState('');
   const [email, setEmail] = useState('Could not retrieve email');
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -33,6 +34,7 @@ export default function NavBar(props) {
 
   function handleLogOutButton() {
     props.onUserLoginStatusChange(false);
+    navigate('/', {state: null});
     setAnchorEl(null);
   }
 
