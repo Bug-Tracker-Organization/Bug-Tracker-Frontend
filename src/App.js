@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavBar from './components/NavBar/NavBar.js';
 import Home from './pages/Home/Home.js';
 import SignIn from './pages/SignIn/SignIn.js';
@@ -16,8 +16,14 @@ function App() {
   
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
+  useEffect(() => {
+    const items = localStorage.getItem('login') !== null ? JSON.parse(localStorage.getItem('login')) : false;
+    setIsUserLoggedIn(items);
+  }, []);
+
   function handleUserLoggedInChange(userLoggedIn) {
     setIsUserLoggedIn(userLoggedIn);
+    localStorage.setItem('login', JSON.stringify(userLoggedIn));
   }
 
   const router = createBrowserRouter([
@@ -42,7 +48,7 @@ function App() {
           />
           <SignIn 
             onUserLoginStatusChange={handleUserLoggedInChange}
-          />,
+          />
         </>,
     },
     {
@@ -53,7 +59,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <Register/>,
+          <Register/>
         </>,
     },
     {
@@ -64,7 +70,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <ForgotPassword/>,
+          <ForgotPassword/>
         </>,
     },
     {
@@ -75,7 +81,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
-          <IssuesOverview/>,
+          <IssuesOverview/>
         </>,
     },
   ]);
