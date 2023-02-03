@@ -7,6 +7,8 @@ import SignIn from './pages/SignIn/SignIn.js';
 import Register from './pages/Register/Register.js';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword.js';
 import IssuesOverview from './pages/IssuesOverview/IssuesOverview';
+import EditIssue from './pages/EditIssue/EditIssue';
+import IssueDetail from './pages/IssueDetail/IssueDetail';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -82,6 +84,28 @@ function App() {
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
           <IssuesOverview/>
+        </>,
+    },
+    {
+      path: "/edit-issue",
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <EditIssue/>
+        </>,
+    },
+    {
+      path: "/issue-detail",
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <IssueDetail/>
         </>,
     },
   ]);
