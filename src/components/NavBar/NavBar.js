@@ -20,7 +20,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function NavBar(props) {
 
   const [userFirstNameLetter, setUserFirstNameLetter] = useState('');
-  const [email, setEmail] = useState('Could not retrieve email');
+  const [email, setEmail] = useState('EMAIL NOT FOUND');
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
