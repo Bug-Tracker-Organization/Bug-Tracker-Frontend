@@ -49,6 +49,13 @@ export default function IssuesOverview(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleRemoveIssue = () => {
+    // Send request to delete from database
+
+    // Remove from table
+    
+    setOpen(false);
+  }
 
   const columns = [
     { id: 'name', label: 'Title', minWidth: 50 },
@@ -146,7 +153,7 @@ export default function IssuesOverview(props) {
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               You are about to remove the issue <i>{issueName}</i>. Continue?
             </Typography>
-            <Button variant="contained"  sx={{
+            <Button variant="contained" onClick={handleRemoveIssue} sx={{
                 backgroundColor: 'red', 
                 color: 'white',
                 ':hover': {
@@ -158,7 +165,7 @@ export default function IssuesOverview(props) {
               }}>
               Remove
             </Button>
-            <Button variant="contained" sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
+            <Button variant="contained" onClick={handleClose} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
               Cancel
             </Button>
           </Box>
