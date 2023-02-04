@@ -14,6 +14,8 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { blue } from '@mui/material/colors';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Link, useNavigate } from 'react-router-dom';
 
 const columns = [
@@ -48,7 +50,7 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
   {
-    id: 'density',
+    id: 'actions',
     label: 'Actions',
     minWidth: 50,
     align: 'right',
@@ -58,7 +60,13 @@ const columns = [
 
 function createData(name, code, population, size) {
   const density = population / size;
-  return { name, code, population, size, density };
+  const actions = <>
+      <Link color="inherit" to={"/edit-issue"}>
+        <EditIcon sx={{ cursor: 'pointer', }}/>
+      </Link>
+      <DeleteForeverIcon sx={{ cursor: 'pointer', }}/>
+    </>
+  return { name, code, population, size, density, actions };
 }
 
 const rows = [
