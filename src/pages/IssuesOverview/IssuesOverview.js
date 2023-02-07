@@ -63,73 +63,72 @@ export default function IssuesOverview(props) {
   }
 
   const columns = [
-    { id: 'name', label: 'Title', minWidth: 50 },
-    { id: 'code', label: 'Assigned to', minWidth: 50 },
+    { id: 'title', label: 'Title', minWidth: 50 },
+    { id: 'assignedTo', label: 'Assigned to', minWidth: 50 },
     {
-      id: 'population',
+      id: 'deadline',
       label: 'Deadline',
       minWidth: 50,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
+      //align: 'right',
+      //format: (value) => value.toLocaleString('en-US'),
     },
     {
-      id: 'size',
+      id: 'assignedBy',
       label: 'Assigned by',
       minWidth: 50,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
+      //align: 'right',
+      //format: (value) => value.toLocaleString('en-US'),
     },
     {
-      id: 'density',
+      id: 'issuedOn',
       label: 'Issued on',
       minWidth: 50,
-      align: 'right',
-      format: (value) => value.toFixed(2),
+      //align: 'right',
+      //format: (value) => value.toFixed(2),
     },
     {
       id: 'status',
       label: 'Status',
       minWidth: 50,
-      align: 'right',
-      format: (value) => value.toFixed(2),
+      //align: 'right',
+      //format: (value) => value.toFixed(2),
     },
     {
       id: 'actions',
       label: 'Actions',
       minWidth: 50,
-      align: 'right',
-      format: (value) => value.toFixed(2),
+      //align: 'right',
+      //format: (value) => value.toFixed(2),
     },
   ];
   
-  function createData(id, name, code, population, size, status) {
-    const density = population / size;
+  function createData(id, title, assignedTo, assignedBy, deadline, issuedOn, status) {
     const actions = <>
         <Link key={'link: ' + id} color="inherit" to={"/edit-issue"}>
           <EditIcon key={'edit: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
         </Link>
         <DeleteForeverIcon key={'delete: ' + id} onClick={() => handleOpen(id)} sx={{ cursor: 'pointer', color: 'red' }}/>
       </>
-    return { id, name, code, population, size, density, status, actions };
+    return { id, title, assignedTo, deadline, assignedBy, issuedOn, status, actions };
   }
   
 
   const [rows, setRows] = useState([
-    createData(0, 'India', 'IN', 1324171354, 3287263, 'Assigned'),
-    createData(1, 'China', 'CN', 1403500365, 9596961, 'In progress'),
-    createData(2, 'Italy', 'IT', 60483973, 301340, 'Completed'),
-    createData(3, 'United States', 'US', 327167434, 9833520, 'Approved'),
-    createData(4, 'Canada', 'CA', 37602103, 9984670, 'In progress'),
-    createData(5, 'Australia', 'AU', 25475400, 7692024, 'In progress'),
-    createData(6, 'Germany', 'DE', 83019200, 357578, 'In progress'),
-    createData(7, 'Ireland', 'IE', 4857000, 70273, 'In progress'),
-    createData(8, 'Mexico', 'MX', 126577691, 1972550, 'In progress'),
-    createData(9, 'Japan', 'JP', 126317000, 377973, 'In progress'),
-    createData(10, 'France', 'FR', 67022000, 640679, 'In progress'),
-    createData(11, 'United Kingdom', 'GB', 67545757, 242495, 'In progress'),
-    createData(12, 'Russia', 'RU', 146793744, 17098246, 'In progress'),
-    createData(13, 'Nigeria', 'NG', 200962417, 923768, 'In progress'),
-    createData(14, 'Brazil', 'BR', 210147125, 8515767, 'In progress'),
+    createData(0, 'Bug problem 0', 'Kim@mail.com', 'IE@mail.com', '01.23.2023', '01.21.2023', 'Assigned'),
+    createData(1, 'Bug problem 1', 'Lee@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(2, 'Bug problem 2', 'John@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Completed'),
+    createData(3, 'Bug problem 3', 'Joseph@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Approved'),
+    createData(4, 'Bug problem 4', 'lchua@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(5, 'Bug problem 5', 'AU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(6, 'Bug problem 6', 'DE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(7, 'Bug problem 7', 'IE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(8, 'Bug problem 8', 'MX@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(9, 'Bug problem 9', 'JP@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(10, 'Bug problem 10', 'FR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(11, 'Bug problem 11', 'GB@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(12, 'Bug problem 12', 'RU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(13, 'Bug problem 13', 'NG@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(14, 'Bug problem 14', 'BR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
   ]);
   
   const style = {
