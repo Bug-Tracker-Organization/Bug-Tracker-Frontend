@@ -34,7 +34,43 @@ export default function IssuesOverview(props) {
 
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
   const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
+  
+  // For Modal 1 - Create Issue
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [title, setTitle] = useState('');
+  const errorTitle = submitClicked && title === '';
+  const [description, setDescription] = useState('');
+  const errorDescription = submitClicked && description === '';
+  // Date?
+  const [assignedTo, setAssignedTo] = useState('');
+  const errorAssignedTo = submitClicked && assignedTo === '';
+  const [status, setStatus] = useState('Assigned');
+
   const navigate = useNavigate();
+
+  // Modal 1 - Create Issue
+  function handleOnChange(event) {
+
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+
+    switch(eventName) {
+      case 'title':
+        setTitle(eventValue);
+        break;
+      case 'description':
+        setDescription(eventValue);
+        break;
+      case 'assignedTo':
+        setAssignedTo(eventValue);
+        break;
+      case 'status':
+        setStatus(eventValue);
+        break;
+      default:
+        console.log('Could not read eventName: ' + eventName);
+    }
+  }
 
   useEffect(() => {
     if (!props.isUserLoggedIn) {
@@ -78,21 +114,30 @@ export default function IssuesOverview(props) {
     setOpenCreateIssueModal(true);
   };
   
-  const handleCloseCreateIssueModal = () => setOpenCreateIssueModal(false);
-  const handleCreateIssue = () => {
-    // Send request to create to database
-
-    // Create to table
-    //setRows([...rows.filter((item) => item.id !== currentIssueId)]);
-    //setRowsTemp([...rows.filter((item) => item.id !== currentIssueId)]);
+  const handleCloseCreateIssueModal = () => {
+    setSubmitClicked(false);
     setOpenCreateIssueModal(false);
+  };
+  const handleCreateIssue = () => {
+
+    if (title !== '' && description !== '' && assignedTo !== '') {
+      // Send request to create to database
+
+      // Add new data to table (create a new row)
+
+      // Reset the Modal
+      setSubmitClicked(false);
+      setOpenCreateIssueModal(false);
+    } else {
+      setSubmitClicked(true);
+    }
   }
 
   // Datepicker
-  const [value, setValue] = React.useState(dayjs());
+  const [deadline, setDeadline] = React.useState(dayjs());
 
-  const handleDateChange = (newValue) => {
-    setValue(newValue);
+  const handleDateChange = (newDeadline) => {
+    setDeadline(newDeadline);
   };
 
   // Modal 2 - Delete issue
@@ -204,6 +249,11 @@ export default function IssuesOverview(props) {
     createData(14, 'Bug problem 14', 'BR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
   ]);
 
+  const users = [{ id: 0, name: 'BR@mail.com' }, 
+    { id: 1, name: 'AU@mail.com' },
+    { id: 2, name: 'DE@mail.com' },
+    { id: 3, name: 'Lee@mail.com' }];
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -235,20 +285,21 @@ export default function IssuesOverview(props) {
             label="Title"
             name="title"
             autoComplete="title"
-            helperText={"This field is required"}//{errorEmail ? "This field is required" : null}
-            error={true}//{errorEmail}
-            //onChange={handleOnChange}
+            helperText={errorTitle ? "This field is required" : null}
+            error={errorTitle}
+            onChange={handleOnChange}
             sx={{ marginTop: 2 }}
           />
           <TextField
             required
             id="outlined-multiline-static"
             label="Description"
+            name="description"
             fullWidth
             multiline
-            helperText={"This field is required"}//{errorEmail ? "This field is required" : null}
-            error={true}//{errorEmail}
-            //onChange={handleOnChange}
+            helperText={errorDescription ? "This field is required" : null}
+            error={errorDescription}
+            onChange={handleOnChange}
             rows={4}
             sx={{ marginTop: 2, marginBottom: 2 }}
           />
@@ -256,38 +307,43 @@ export default function IssuesOverview(props) {
             <DesktopDatePicker
               label="Deadline"
               inputFormat="MM/DD/YYYY"
-              value={value}
+              value={deadline}
+              name="deadline"
               onChange={handleDateChange}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
           <FormControl fullWidth sx={{ marginTop: 2 }}>
-            <InputLabel id="demo-simple-select-label">Assigned to</InputLabel>
+            <InputLabel id="assignedTo">Assigned to</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              //value={assignedTo}
+              required
+              labelId="assignedTo"
+              id="assignedTo"
+              name="assignedTo"
+              value={assignedTo}
               label="Assigned to"
-              //onChange={handleAssignedToDropdownChange}
+              error={errorAssignedTo}
+              onChange={handleOnChange}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {users.map((item) => (
+                <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl fullWidth sx={{ marginTop: 2 }}>
-            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <InputLabel id="status">Status</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              //value={status}
+              labelId="status"
+              id="status"
+              name="status"
+              value={status}
               label="Status"
-              //onChange={handleAssignedToDropdownChange}
+              onChange={handleOnChange}
             >
-              <MenuItem value='assigned'>Assigned</MenuItem>
-              <MenuItem value='in-progress'>In progress</MenuItem>
-              <MenuItem value='completed'>Completed</MenuItem>
-              <MenuItem value='approved'>Approved</MenuItem>
+              <MenuItem value='Assigned'>Assigned</MenuItem>
+              <MenuItem value='In progress'>In progress</MenuItem>
+              <MenuItem value='Completed'>Completed</MenuItem>
+              <MenuItem value='Approved'>Approved</MenuItem>
             </Select>
           </FormControl>
           <Button variant="contained" onClick={handleCreateIssue} sx={{
