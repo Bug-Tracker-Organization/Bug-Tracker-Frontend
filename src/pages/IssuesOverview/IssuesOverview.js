@@ -35,6 +35,7 @@ export default function IssuesOverview(props) {
   // Table
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [currentTaskId, setCurrentTaskId] = useState('');
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -47,13 +48,17 @@ export default function IssuesOverview(props) {
 
   // Modal
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = (event) => {
+    setCurrentTaskId(event);
+    setOpen(true)
+  };
+  
   const handleClose = () => setOpen(false);
   const handleRemoveIssue = () => {
     // Send request to delete from database
 
     // Remove from table
-    
+    setRows([...rows.filter((item) => item.id !== currentTaskId)]);
     setOpen(false);
   }
 
@@ -82,7 +87,7 @@ export default function IssuesOverview(props) {
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'density',
+      id: 'status',
       label: 'Status',
       minWidth: 50,
       align: 'right',
@@ -97,34 +102,35 @@ export default function IssuesOverview(props) {
     },
   ];
   
-  function createData(name, code, population, size) {
+  function createData(id, name, code, population, size, status) {
     const density = population / size;
     const actions = <>
-        <Link color="inherit" to={"/edit-issue"}>
-          <EditIcon sx={{ cursor: 'pointer', color: 'grey' }}/>
+        <Link key={'link: ' + id} color="inherit" to={"/edit-issue"}>
+          <EditIcon key={'edit: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
         </Link>
-        <DeleteForeverIcon onClick={handleOpen} sx={{ cursor: 'pointer', color: 'red' }}/>
+        <DeleteForeverIcon key={'delete: ' + id} onClick={() => handleOpen(id)} sx={{ cursor: 'pointer', color: 'red' }}/>
       </>
-    return { name, code, population, size, density, actions };
+    return { id, name, code, population, size, density, status, actions };
   }
   
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
+
+  const [rows, setRows] = useState([
+    createData(0, 'India', 'IN', 1324171354, 3287263, 'Assigned'),
+    createData(1, 'China', 'CN', 1403500365, 9596961, 'In progress'),
+    createData(2, 'Italy', 'IT', 60483973, 301340, 'Completed'),
+    createData(3, 'United States', 'US', 327167434, 9833520, 'Approved'),
+    createData(4, 'Canada', 'CA', 37602103, 9984670, 'In progress'),
+    createData(5, 'Australia', 'AU', 25475400, 7692024, 'In progress'),
+    createData(6, 'Germany', 'DE', 83019200, 357578, 'In progress'),
+    createData(7, 'Ireland', 'IE', 4857000, 70273, 'In progress'),
+    createData(8, 'Mexico', 'MX', 126577691, 1972550, 'In progress'),
+    createData(9, 'Japan', 'JP', 126317000, 377973, 'In progress'),
+    createData(10, 'France', 'FR', 67022000, 640679, 'In progress'),
+    createData(11, 'United Kingdom', 'GB', 67545757, 242495, 'In progress'),
+    createData(12, 'Russia', 'RU', 146793744, 17098246, 'In progress'),
+    createData(13, 'Nigeria', 'NG', 200962417, 923768, 'In progress'),
+    createData(14, 'Brazil', 'BR', 210147125, 8515767, 'In progress'),
+  ]);
   
   const style = {
     position: 'absolute',
@@ -202,11 +208,11 @@ export default function IssuesOverview(props) {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                      <TableRow key={'row: ' + row.id} hover role="checkbox" tabIndex={-1} key={row.code}>
                         {columns.map((column) => {
                           const value = row[column.id];
                           return (
-                            <TableCell key={column.id} align={column.align}>
+                            <TableCell key={'col: ' + column.id} align={column.align}>
                               {column.format && typeof value === 'number'
                                 ? column.format(value)
                                 : value}
