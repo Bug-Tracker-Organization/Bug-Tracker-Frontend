@@ -16,6 +16,7 @@ import TableRow from '@mui/material/TableRow';
 import { blue, red } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Link, useNavigate } from 'react-router-dom';
@@ -36,6 +37,7 @@ export default function IssuesOverview(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentTaskId, setCurrentTaskId] = useState('');
+  //const [currentSearchItem, setCurrentSearchItem] = useState('');
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -45,6 +47,21 @@ export default function IssuesOverview(props) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const handleSearchBarChange = (event) => {
+    const target = event.target.value.toLowerCase();
+    setRows([...rowsTemp.filter((item) => {
+      if (item.title.toLowerCase().includes(target)
+        || item.assignedTo.toLowerCase().includes(target)
+        || item.deadline.toLowerCase().includes(target)
+        || item.assignedBy.toLowerCase().includes(target)
+        || item.issuedOn.toLowerCase().includes(target)
+        || item.status.toLowerCase().includes(target)) {
+        return true;
+      }
+      return false;
+    })]);
+  }
 
   // Modal
   const [open, setOpen] = React.useState(false);
@@ -59,6 +76,7 @@ export default function IssuesOverview(props) {
 
     // Remove from table
     setRows([...rows.filter((item) => item.id !== currentTaskId)]);
+    setRowsTemp([...rows.filter((item) => item.id !== currentTaskId)]);
     setOpen(false);
   }
 
@@ -131,6 +149,24 @@ export default function IssuesOverview(props) {
     createData(14, 'Bug problem 14', 'BR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
   ]);
   
+  const [rowsTemp, setRowsTemp] = useState([
+    createData(0, 'Bug problem 0', 'Kim@mail.com', 'IE@mail.com', '01.23.2023', '01.21.2023', 'Assigned'),
+    createData(1, 'Bug problem 1', 'Lee@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(2, 'Bug problem 2', 'John@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Completed'),
+    createData(3, 'Bug problem 3', 'Joseph@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Approved'),
+    createData(4, 'Bug problem 4', 'lchua@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(5, 'Bug problem 5', 'AU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(6, 'Bug problem 6', 'DE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(7, 'Bug problem 7', 'IE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(8, 'Bug problem 8', 'MX@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(9, 'Bug problem 9', 'JP@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(10, 'Bug problem 10', 'FR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(11, 'Bug problem 11', 'GB@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(12, 'Bug problem 12', 'RU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(13, 'Bug problem 13', 'NG@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+    createData(14, 'Bug problem 14', 'BR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+  ]);
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -186,11 +222,14 @@ export default function IssuesOverview(props) {
             </Button>
           </Typography>
         </Toolbar>
+        <Toolbar>
+          <TextField id="outlined-search" label="Search" type="search" onChange={handleSearchBarChange} sx={{ flexGrow: 1, position: 'absolute', right: 0 }}/>
+        </Toolbar>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead sx={{ color: 'red' }}>
-                <TableRow>
+                <TableRow key='table key'>
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
