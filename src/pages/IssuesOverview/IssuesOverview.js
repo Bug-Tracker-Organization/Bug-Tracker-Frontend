@@ -20,6 +20,15 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Link, useNavigate } from 'react-router-dom';
+// Date
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function IssuesOverview(props) {
 
@@ -37,7 +46,6 @@ export default function IssuesOverview(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [currentIssueId, setCurrentIssueId] = useState('');
-  //const [currentSearchItem, setCurrentSearchItem] = useState('');
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -80,10 +88,18 @@ export default function IssuesOverview(props) {
     setOpenCreateIssueModal(false);
   }
 
+  // Datepicker
+  const [value, setValue] = React.useState(dayjs());
+
+  const handleDateChange = (newValue) => {
+    setValue(newValue);
+  };
+
   // Modal 2 - Delete issue
   const [openDeleteIssueModal, setOpenDeleteIssueModal] = React.useState(false);
-  const handleOpenDeleteIssueModal = (event) => {
-    setCurrentIssueId(event);
+  const handleOpenDeleteIssueModal = (id, title) => {
+    setCurrentIssueId(id);
+    setIssueName(title);
     setOpenDeleteIssueModal(true)
   };
   
@@ -144,7 +160,7 @@ export default function IssuesOverview(props) {
         </Link>
         <DeleteForeverIcon 
           key={'delete: ' + id} 
-          onClick={() => handleOpenDeleteIssueModal(id)} 
+          onClick={() => handleOpenDeleteIssueModal(id, title)} 
           sx={{ cursor: 'pointer', color: 'red' }}
         />
       </>
@@ -210,24 +226,86 @@ export default function IssuesOverview(props) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Remove Issue
+            New Issue
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            You are about to remove the issue <i>{issueName}</i>. Continue?
-          </Typography>
+          <TextField
+            required
+            fullWidth
+            id="title"
+            label="Title"
+            name="title"
+            autoComplete="title"
+            helperText={"This field is required"}//{errorEmail ? "This field is required" : null}
+            error={true}//{errorEmail}
+            //onChange={handleOnChange}
+            sx={{ marginTop: 2 }}
+          />
+          <TextField
+            required
+            id="outlined-multiline-static"
+            label="Description"
+            fullWidth
+            multiline
+            helperText={"This field is required"}//{errorEmail ? "This field is required" : null}
+            error={true}//{errorEmail}
+            //onChange={handleOnChange}
+            rows={4}
+            sx={{ marginTop: 2, marginBottom: 2 }}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Deadline"
+              inputFormat="MM/DD/YYYY"
+              value={value}
+              onChange={handleDateChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <FormControl fullWidth sx={{ marginTop: 2 }}>
+            <InputLabel id="demo-simple-select-label">Assigned to</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              //value={assignedTo}
+              label="Assigned to"
+              //onChange={handleAssignedToDropdownChange}
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{ marginTop: 2 }}>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              //value={status}
+              label="Status"
+              //onChange={handleAssignedToDropdownChange}
+            >
+              <MenuItem value='assigned'>Assigned</MenuItem>
+              <MenuItem value='in-progress'>In progress</MenuItem>
+              <MenuItem value='completed'>Completed</MenuItem>
+              <MenuItem value='approved'>Approved</MenuItem>
+            </Select>
+          </FormControl>
           <Button variant="contained" onClick={handleCreateIssue} sx={{
+              backgroundColor: blue[500], color: 'white',
+              marginTop: 2,
+              marginRight: 1,
+            }}>
+            Create Issue
+          </Button>
+          <Button variant="contained" onClick={handleCloseCreateIssueModal} 
+            sx={{ 
               backgroundColor: 'red', 
               color: 'white',
               ':hover': {
                 bgcolor: red[700],
                 color: 'white',
-              },
-              marginTop: 2,
-              marginRight: 1,
-            }}>
-            Remove
-          </Button>
-          <Button variant="contained" onClick={handleCloseCreateIssueModal} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
+              }, 
+              marginTop: 2 }}>
             Cancel
           </Button>
         </Box>
