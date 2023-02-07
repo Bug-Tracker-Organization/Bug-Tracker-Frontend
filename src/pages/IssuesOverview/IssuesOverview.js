@@ -36,7 +36,7 @@ export default function IssuesOverview(props) {
   // Table
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [currentTaskId, setCurrentTaskId] = useState('');
+  const [currentIssueId, setCurrentIssueId] = useState('');
   //const [currentSearchItem, setCurrentSearchItem] = useState('');
 
   const handleChangePage = (event, newPage) => {
@@ -63,21 +63,38 @@ export default function IssuesOverview(props) {
     })]);
   }
 
-  // Modal
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = (event) => {
-    setCurrentTaskId(event);
-    setOpen(true)
+  // Modal 1 - Create issue
+  const [openCreateIssueModal, setOpenCreateIssueModal] = React.useState(false);
+  const handleOpenCreateIssueModal = (event) => {
+    //setCurrentIssueId(event);
+    setOpenCreateIssueModal(true);
   };
   
-  const handleClose = () => setOpen(false);
+  const handleCloseCreateIssueModal = () => setOpenCreateIssueModal(false);
+  const handleCreateIssue = () => {
+    // Send request to create to database
+
+    // Create to table
+    //setRows([...rows.filter((item) => item.id !== currentIssueId)]);
+    //setRowsTemp([...rows.filter((item) => item.id !== currentIssueId)]);
+    setOpenCreateIssueModal(false);
+  }
+
+  // Modal 2 - Delete issue
+  const [openDeleteIssueModal, setOpenDeleteIssueModal] = React.useState(false);
+  const handleOpenDeleteIssueModal = (event) => {
+    setCurrentIssueId(event);
+    setOpenDeleteIssueModal(true)
+  };
+  
+  const handleCloseDeleteIssueModal = () => setOpenDeleteIssueModal(false);
   const handleRemoveIssue = () => {
     // Send request to delete from database
 
     // Remove from table
-    setRows([...rows.filter((item) => item.id !== currentTaskId)]);
-    setRowsTemp([...rows.filter((item) => item.id !== currentTaskId)]);
-    setOpen(false);
+    setRows([...rows.filter((item) => item.id !== currentIssueId)]);
+    setRowsTemp([...rows.filter((item) => item.id !== currentIssueId)]);
+    setOpenDeleteIssueModal(false);
   }
 
   const columns = [
@@ -125,7 +142,11 @@ export default function IssuesOverview(props) {
         <Link key={'link: ' + id} color="inherit" to={"/edit-issue"}>
           <EditIcon key={'edit: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
         </Link>
-        <DeleteForeverIcon key={'delete: ' + id} onClick={() => handleOpen(id)} sx={{ cursor: 'pointer', color: 'red' }}/>
+        <DeleteForeverIcon 
+          key={'delete: ' + id} 
+          onClick={() => handleOpenDeleteIssueModal(id)} 
+          sx={{ cursor: 'pointer', color: 'red' }}
+        />
       </>
     return { id, title, assignedTo, deadline, assignedBy, issuedOn, status, actions };
   }
@@ -182,42 +203,73 @@ export default function IssuesOverview(props) {
   return (
     <>
       <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Remove Issue
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You are about to remove the issue <i>{issueName}</i>. Continue?
-            </Typography>
-            <Button variant="contained" onClick={handleRemoveIssue} sx={{
-                backgroundColor: 'red', 
+        open={openCreateIssueModal}
+        onClose={handleCloseCreateIssueModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Remove Issue
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            You are about to remove the issue <i>{issueName}</i>. Continue?
+          </Typography>
+          <Button variant="contained" onClick={handleCreateIssue} sx={{
+              backgroundColor: 'red', 
+              color: 'white',
+              ':hover': {
+                bgcolor: red[700],
                 color: 'white',
-                ':hover': {
-                  bgcolor: red[700],
-                  color: 'white',
-                },
-                marginTop: 2,
-                marginRight: 1,
-              }}>
-              Remove
-            </Button>
-            <Button variant="contained" onClick={handleClose} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
-              Cancel
-            </Button>
-          </Box>
-        </Modal>
+              },
+              marginTop: 2,
+              marginRight: 1,
+            }}>
+            Remove
+          </Button>
+          <Button variant="contained" onClick={handleCloseCreateIssueModal} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
+      <Modal
+        open={openDeleteIssueModal}
+        onClose={handleCloseDeleteIssueModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Remove Issue
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            You are about to remove the issue <i>{issueName}</i>. Continue?
+          </Typography>
+          <Button variant="contained" onClick={handleRemoveIssue} sx={{
+              backgroundColor: 'red', 
+              color: 'white',
+              ':hover': {
+                bgcolor: red[700],
+                color: 'white',
+              },
+              marginTop: 2,
+              marginRight: 1,
+            }}>
+            Remove
+          </Button>
+          <Button variant="contained" onClick={handleCloseDeleteIssueModal} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
       <Container>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Issues Overview - {organizationName}  
           </Typography>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, position: 'absolute', right: 0 }}>
-            <Button className="new-issue-btn" variant="contained" sx={{ backgroundColor: blue[500], color: 'white', }}>
+            <Button className="new-issue-btn" onClick={handleOpenCreateIssueModal} 
+              variant="contained" sx={{ backgroundColor: blue[500], color: 'white', }}>
               + New Issue
             </Button>
           </Typography>
