@@ -34,6 +34,7 @@ export default function IssuesOverview(props) {
 
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
   const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
+  const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
   
   // For Modal 1 - Create Issue
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -41,7 +42,12 @@ export default function IssuesOverview(props) {
   const errorTitle = submitClicked && title === '';
   const [description, setDescription] = useState('');
   const errorDescription = submitClicked && description === '';
-  // Date?
+  // Datepicker
+  const [deadline, setDeadline] = React.useState(dayjs());
+  const handleDateChange = (newDeadline) => {
+    setDeadline(newDeadline);
+  };
+  const errorDeadline = submitClicked && dayjs(deadline).isValid();  
   const [assignedTo, setAssignedTo] = useState('');
   const errorAssignedTo = submitClicked && assignedTo === '';
   const [status, setStatus] = useState('Assigned');
@@ -94,6 +100,8 @@ export default function IssuesOverview(props) {
 
   const handleSearchBarChange = (event) => {
     const target = event.target.value.toLowerCase();
+    // Reset the page or else user will not show anything if on another page
+    setPage(0);
     setRows([...rowsTemp.filter((item) => {
       if (item.title.toLowerCase().includes(target)
         || item.assignedTo.toLowerCase().includes(target)
@@ -115,30 +123,50 @@ export default function IssuesOverview(props) {
   };
   
   const handleCloseCreateIssueModal = () => {
+    setDeadline(dayjs());
+    setAssignedTo('');
     setSubmitClicked(false);
     setOpenCreateIssueModal(false);
   };
   const handleCreateIssue = () => {
 
-    if (title !== '' && description !== '' && assignedTo !== '') {
-      // Send request to create to database
+    if (title !== '' 
+      && description !== '' 
+      && assignedTo !== '' 
+      && dayjs(deadline).isValid()) {
+        // Send request to create to database
 
-      // Add new data to table (create a new row)
+        // Add new data to table (create a new row)
+        const deadlineFormatted = deadline.format('MM.DD.YYYY').toString();
+        const currentDateFormatted = dayjs().format('MM.DD.YYYY').toString();
+        const assignedToUser = users[assignedTo] ? users[assignedTo].name : 'COULD NOT FIND USER NAME';
 
-      // Reset the Modal
-      setSubmitClicked(false);
-      setOpenCreateIssueModal(false);
+        setRows([...rows, 
+          createData(
+            rows.length,
+            title, 
+            assignedToUser, 
+            currentUserName, 
+            deadlineFormatted,
+            currentDateFormatted,
+            status)]);
+        setRowsTemp([...rowsTemp,
+          createData(
+            rowsTemp.length,
+            title, 
+            assignedToUser,
+            currentUserName, 
+            deadlineFormatted,
+            currentDateFormatted,
+            status)]);
+        // Reset the Modal
+        setAssignedTo('');
+        setSubmitClicked(false);
+        setOpenCreateIssueModal(false);
     } else {
       setSubmitClicked(true);
     }
   }
-
-  // Datepicker
-  const [deadline, setDeadline] = React.useState(dayjs());
-
-  const handleDateChange = (newDeadline) => {
-    setDeadline(newDeadline);
-  };
 
   // Modal 2 - Delete issue
   const [openDeleteIssueModal, setOpenDeleteIssueModal] = React.useState(false);
@@ -154,7 +182,7 @@ export default function IssuesOverview(props) {
 
     // Remove from table
     setRows([...rows.filter((item) => item.id !== currentIssueId)]);
-    setRowsTemp([...rows.filter((item) => item.id !== currentIssueId)]);
+    setRowsTemp([...rowsTemp.filter((item) => item.id !== currentIssueId)]);
     setOpenDeleteIssueModal(false);
   }
 
@@ -309,6 +337,7 @@ export default function IssuesOverview(props) {
               inputFormat="MM/DD/YYYY"
               value={deadline}
               name="deadline"
+              error={errorDeadline}
               onChange={handleDateChange}
               renderInput={(params) => <TextField {...params} />}
             />
