@@ -1,7 +1,209 @@
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { blue, red } from '@mui/material/colors';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import { Container } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+// Date
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 export default function EditIssue(props) {
+  const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
+  const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
+  const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
+  
+  // For Modal 1 - Create Issue
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [title, setTitle] = useState('TITLE NOT FOUND');
+  const errorTitle = submitClicked && title === '';
+  const [description, setDescription] = useState('DESCRIPTION NOT FOUND');
+  const errorDescription = submitClicked && description === '';
+  // Datepicker
+  const [deadline, setDeadline] = React.useState(dayjs());
+  const handleDateChange = (newDeadline) => {
+    setDeadline(newDeadline);
+  };
+  const errorDeadline = submitClicked && dayjs(deadline).isValid();  
+  const [assignedTo, setAssignedTo] = useState('BR@mail.com');
+  const errorAssignedTo = submitClicked && assignedTo === '';
+  const [status, setStatus] = useState('Assigned');
+
+  const navigate = useNavigate();
+
+  // Doesn't work
+  /*
+  useEffect(() => {
+    if (!props.isUserLoggedIn) {
+      navigate('/', {state: null});
+    }
+  }, [props.isUserLoggedIn]);
+  */
+  function handleOnChange(event) {
+
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+
+    switch(eventName) {
+      case 'title':
+        setTitle(eventValue);
+        break;
+      case 'description':
+        setDescription(eventValue);
+        break;
+      case 'assignedTo':
+        setAssignedTo(eventValue);
+        break;
+      case 'status':
+        setStatus(eventValue);
+        break;
+      default:
+        console.log('Could not read eventName: ' + eventName);
+    }
+  }
+
+  const handleCloseCreateIssueModal = () => {
+    setDeadline(dayjs());
+    setAssignedTo('');
+    setStatus('Assigned');
+    setSubmitClicked(false);
+  };
+
+  const handleCreateIssue = () => {
+
+    if (title !== '' 
+      && description !== '' 
+      && assignedTo !== '' 
+      && dayjs(deadline).isValid()) {
+        // Send request to create to database
+
+        // Add new data to table (create a new row)
+        const deadlineFormatted = deadline.format('MM.DD.YYYY').toString();
+        const currentDateFormatted = dayjs().format('MM.DD.YYYY').toString();
+        const assignedToUser = users[assignedTo] ? users[assignedTo].name : 'COULD NOT FIND USER NAME';
+
+        // Reset the Modal
+        setAssignedTo('');
+        setSubmitClicked(false);
+    } else {
+      setSubmitClicked(true);
+    }
+  }
+
+  const users = [{ id: 0, name: 'BR@mail.com' }, 
+    { id: 1, name: 'AU@mail.com' },
+    { id: 2, name: 'DE@mail.com' },
+    { id: 3, name: 'Lee@mail.com' }];
+
+  const style = {
+    p: 4,
+  };
+
   return (
     <>
-    Edit Issue
+      <Container>
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Edit Issue
+          </Typography>
+          <TextField
+            required
+            fullWidth
+            id="title"
+            label="Title"
+            name="title"
+            autoComplete="title"
+            helperText={errorTitle ? "This field is required" : null}
+            error={errorTitle}
+            onChange={handleOnChange}
+            sx={{ marginTop: 2 }}
+          />
+          <TextField
+            required
+            id="outlined-multiline-static"
+            label="Description"
+            name="description"
+            fullWidth
+            multiline
+            helperText={errorDescription ? "This field is required" : null}
+            error={errorDescription}
+            onChange={handleOnChange}
+            rows={4}
+            sx={{ marginTop: 2, marginBottom: 2 }}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Deadline"
+              inputFormat="MM/DD/YYYY"
+              value={deadline}
+              name="deadline"
+              error={errorDeadline}
+              onChange={handleDateChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <FormControl fullWidth sx={{ marginTop: 2 }}>
+            <InputLabel id="assignedTo">Assigned to</InputLabel>
+            <Select
+              required
+              labelId="assignedTo"
+              id="assignedTo"
+              name="assignedTo"
+              value={assignedTo}
+              label="Assigned to"
+              error={errorAssignedTo}
+              onChange={handleOnChange}
+            >
+              {users.map((item) => (
+                <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{ marginTop: 2 }}>
+            <InputLabel id="status">Status</InputLabel>
+            <Select
+              labelId="status"
+              id="status"
+              name="status"
+              value={status}
+              label="Status"
+              onChange={handleOnChange}
+            >
+              <MenuItem value='Assigned'>Assigned</MenuItem>
+              <MenuItem value='In progress'>In progress</MenuItem>
+              <MenuItem value='Completed'>Completed</MenuItem>
+              <MenuItem value='Approved'>Approved</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" onClick={handleCreateIssue} sx={{
+              backgroundColor: blue[500], color: 'white',
+              marginTop: 2,
+              marginRight: 1,
+            }}>
+            Create Issue
+          </Button>
+          <Button variant="contained" onClick={handleCloseCreateIssueModal} 
+            sx={{ 
+              backgroundColor: 'red', 
+              color: 'white',
+              ':hover': {
+                bgcolor: red[700],
+                color: 'white',
+              }, 
+              marginTop: 2 }}>
+            Cancel
+          </Button>
+        </Box>
+      </Container>
     </>
   );
 }
