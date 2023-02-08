@@ -34,7 +34,7 @@ export default function EditIssue(props) {
     setDeadline(newDeadline);
   };
   const errorDeadline = submitClicked && dayjs(deadline).isValid();  
-  const [assignedTo, setAssignedTo] = useState('BR@mail.com');
+  const [assignedTo, setAssignedTo] = useState(0);
   const errorAssignedTo = submitClicked && assignedTo === '';
   const [status, setStatus] = useState('Assigned');
 
@@ -72,10 +72,7 @@ export default function EditIssue(props) {
   }
 
   const handleCloseCreateIssueModal = () => {
-    setDeadline(dayjs());
-    setAssignedTo('');
-    setStatus('Assigned');
-    setSubmitClicked(false);
+    navigate('/issues-overview', {state: null});
   };
 
   const handleCreateIssue = () => {
@@ -86,14 +83,9 @@ export default function EditIssue(props) {
       && dayjs(deadline).isValid()) {
         // Send request to create to database
 
-        // Add new data to table (create a new row)
-        const deadlineFormatted = deadline.format('MM.DD.YYYY').toString();
-        const currentDateFormatted = dayjs().format('MM.DD.YYYY').toString();
-        const assignedToUser = users[assignedTo] ? users[assignedTo].name : 'COULD NOT FIND USER NAME';
+          // If submission success:
+          navigate('/issue-detail', {state: null});
 
-        // Reset the Modal
-        setAssignedTo('');
-        setSubmitClicked(false);
     } else {
       setSubmitClicked(true);
     }
@@ -122,6 +114,7 @@ export default function EditIssue(props) {
             label="Title"
             name="title"
             autoComplete="title"
+            defaultValue={title}
             helperText={errorTitle ? "This field is required" : null}
             error={errorTitle}
             onChange={handleOnChange}
@@ -134,6 +127,7 @@ export default function EditIssue(props) {
             name="description"
             fullWidth
             multiline
+            defaultValue={description}
             helperText={errorDescription ? "This field is required" : null}
             error={errorDescription}
             onChange={handleOnChange}
@@ -145,6 +139,7 @@ export default function EditIssue(props) {
               label="Deadline"
               inputFormat="MM/DD/YYYY"
               value={deadline}
+              defaultValue={deadline}
               name="deadline"
               error={errorDeadline}
               onChange={handleDateChange}
@@ -159,6 +154,7 @@ export default function EditIssue(props) {
               id="assignedTo"
               name="assignedTo"
               value={assignedTo}
+              defaultValue={assignedTo}
               label="Assigned to"
               error={errorAssignedTo}
               onChange={handleOnChange}
@@ -189,7 +185,7 @@ export default function EditIssue(props) {
               marginTop: 2,
               marginRight: 1,
             }}>
-            Create Issue
+            Save
           </Button>
           <Button variant="contained" onClick={handleCloseCreateIssueModal} 
             sx={{ 
