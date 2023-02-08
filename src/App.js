@@ -9,6 +9,7 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword.js';
 import IssuesOverview from './pages/IssuesOverview/IssuesOverview';
 import EditIssue from './pages/EditIssue/EditIssue';
 import IssueDetail from './pages/IssueDetail/IssueDetail';
+import UserProfile from './pages/UserProfile/UserProfile';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -107,6 +108,17 @@ function App() {
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
           <IssueDetail isUserLoggedIn={isUserLoggedIn}/>
+        </>,
+    },
+    {
+      path: "/user-profile",
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <UserProfile isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
   ]);

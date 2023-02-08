@@ -125,6 +125,7 @@ export default function IssuesOverview(props) {
   const handleCloseCreateIssueModal = () => {
     setDeadline(dayjs());
     setAssignedTo('');
+    setStatus('Assigned');
     setSubmitClicked(false);
     setOpenCreateIssueModal(false);
   };
@@ -226,9 +227,35 @@ export default function IssuesOverview(props) {
     },
   ];
   
-  function createData(id, title, assignedTo, assignedBy, deadline, issuedOn, status) {
+  function createData(
+      id, 
+      titleUnformatted, 
+      assignedToUnformatted, 
+      assignedByUnformatted, 
+      deadline, 
+      issuedOn, 
+      statusUnformatted) {
+    const title = <>
+        <Link key={'title-link: ' + id} color="inherit" to={"/issue-detail"}>
+          <b>{titleUnformatted}</b>
+        </Link>
+      </>
+    const assignedTo = <>
+        <Link key={'assigned-to-link: ' + id} color="inherit" to={"/user-profile"}>
+          {assignedToUnformatted}
+        </Link>
+      </>
+    const assignedBy = <>
+        <Link key={'assigned-by-link: ' + id} color="inherit" to={"/user-profile"}>
+          {assignedByUnformatted}
+        </Link>
+      </>
+    const statusColor = getStatusColor(statusUnformatted);
+    const status = <><Typography sx={{ color: statusColor }}>
+        {statusUnformatted}
+      </Typography></>
     const actions = <>
-        <Link key={'link: ' + id} color="inherit" to={"/edit-issue"}>
+        <Link key={'actions-link: ' + id} color="inherit" to={"/edit-issue"}>
           <EditIcon key={'edit: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
         </Link>
         <DeleteForeverIcon 
@@ -240,6 +267,16 @@ export default function IssuesOverview(props) {
     return { id, title, assignedTo, deadline, assignedBy, issuedOn, status, actions };
   }
   
+  function getStatusColor(status) {
+    if (status === 'Assigned') {
+      return 'orange';
+    } else if (status === 'In progress') {
+      return blue[500];
+    } else if (status === 'Completed') {
+      return 'blue';
+    }
+    return 'green';
+  }
 
   const [rows, setRows] = useState([
     createData(0, 'Bug problem 0', 'Kim@mail.com', 'IE@mail.com', '01.23.2023', '01.21.2023', 'Assigned'),
