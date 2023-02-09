@@ -22,7 +22,16 @@ export default function IssueDetail(props) {
   const [status, setStatus] = useState('STATUS NOT FOUND');
   const [issuedOn, setIssuedOn] = useState('ISSUED ON NOT FOUND');
   const [lastChanged, setLastChanged] = useState('LAST CHANGED NOT FOUND');
-  const [numberOfComments, setNumberOfComments] = useState(0);
+  const [comments, setComments] = useState([
+    createData(0, 'John', 'I\'ll need another day to work on this', '18.11.2022 22:44', '18.11.2022 22:44'),
+    createData(1, 'Martha', 'Could you add something like a pause button?', '18.11.2022 22:44', null),
+    createData(2, 'Jake', 'Looks good!', '18.11.2022 22:44', null),
+    createData(3, 'John', 'Thank you for the feedback.', '18.11.2022 22:44', '18.11.2022 22:44'),
+  ]);
+  // Modal 2 - Delete comment
+  const [currentCommentId, setCurrentCommentId] = useState('');
+  const [currentCommentCommenterName, setCurrentCommentCommenterName] = useState('');
+  const [currentCommentCreationDateAndTime, setCurrentCommentCreationDateAndTime] = useState('');
   const navigate = useNavigate();
 
   function getStatusColor(status) {
@@ -36,7 +45,35 @@ export default function IssueDetail(props) {
     return 'green';
   }
 
-  // Modal - Delete issue
+  function createData(id, name, message, createdDateAndTime, editedDateAndTime) {
+    return <>
+      <Paper key={'paper: ' + id} sx={{ width: '100%', overflow: 'hidden', marginBottom: 2 }}>
+        <Container key={'container: ' + id} sx={{ marginTop: 2, marginBottom: 2 }}>
+          <Typography key={'type0: ' + id}>
+            <Link key={'link1: ' + id} to={"/user-profile"}><b>{name}</b></Link> says:
+              <span style={{ float: 'right' }}>
+                <Link key={'link2: ' + id} color="inherit" to={"/edit-issue"}>
+                  <EditIcon key={'icon1: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
+                </Link>
+                <DeleteForeverIcon
+                  key={'icon2: ' + id}
+                  onClick={() => handleOpenDeleteCommentModal(id, name, createdDateAndTime)} 
+                  sx={{ cursor: 'pointer', color: 'red' }}
+                />
+              </span>
+          </Typography>
+          <Typography key={'type1: ' + id} sx={{ marginTop: 2 }}>
+            {message}
+          </Typography>
+          <Typography key={'type2: ' + id} sx={{ marginTop: 2 }}>
+            {createdDateAndTime} {editedDateAndTime ? '(edited on ' + editedDateAndTime + ')' : null}
+          </Typography>
+        </Container>
+      </Paper> 
+    </>
+  }
+
+  // Modal 1 - Delete issue
   const [openDeleteIssueModal, setOpenDeleteIssueModal] = useState(false);
   const handleOpenDeleteIssueModal = () => {
     setOpenDeleteIssueModal(true);
@@ -48,6 +85,24 @@ export default function IssueDetail(props) {
 
     setOpenDeleteIssueModal(false);
     navigate('/issues-overview', {state: null});
+  }
+
+  // Modal 2 - Delete comment
+  const [openDeleteCommentModal, setOpenDeleteCommentModal] = useState(false);
+  const handleOpenDeleteCommentModal = (id, commenterName, creationDateAndTime) => {
+    setCurrentCommentId(id);
+    setCurrentCommentCommenterName(commenterName);
+    setCurrentCommentCreationDateAndTime(creationDateAndTime);
+    setOpenDeleteCommentModal(true);
+  };
+  
+  const handleCloseDeleteCommentModal = () => setOpenDeleteCommentModal(false);
+  const handleRemoveComment = () => {
+    // Send request to delete from database
+
+    // Remove comment from the UI
+    setComments([...comments.filter((comment) => comment.props.children.key !== "paper: " + currentCommentId)]);
+    setOpenDeleteCommentModal(false);
   }
 
   const style = {
@@ -90,6 +145,36 @@ export default function IssueDetail(props) {
             Remove
           </Button>
           <Button variant="contained" onClick={handleCloseDeleteIssueModal} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
+      <Modal
+        open={openDeleteCommentModal}
+        onClose={handleCloseDeleteCommentModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Remove Comment
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            You are about to remove the comment from the user <i>{currentCommentCommenterName}</i> from <i>{currentCommentCreationDateAndTime}</i>. Continue?
+          </Typography>
+          <Button variant="contained" onClick={handleRemoveComment} sx={{
+              backgroundColor: 'red', 
+              color: 'white',
+              ':hover': {
+                bgcolor: red[700],
+                color: 'white',
+              },
+              marginTop: 2,
+              marginRight: 1,
+            }}>
+            Remove
+          </Button>
+          <Button variant="contained" onClick={handleCloseDeleteCommentModal} sx={{ backgroundColor: blue[500], color: 'white', marginTop: 2 }}>
             Cancel
           </Button>
         </Box>
@@ -141,31 +226,10 @@ export default function IssueDetail(props) {
       <Container>
         <Toolbar>
           <Typography variant="h6" component="h2">
-            Comments ({numberOfComments})
+            Comments ({comments.length})
           </Typography>
         </Toolbar>
-        <Paper sx={{ width: '100%', overflow: 'hidden', marginBottom: 2 }}>
-          <Container sx={{ marginTop: 2, marginBottom: 2 }}>
-            <Typography>
-              <Link to={"/user-profile"}><b>{assignedTo}</b></Link> says:
-              <span style={{ float: 'right' }}>
-                <Link color="inherit" to={"/edit-issue"}>
-                  <EditIcon sx={{ cursor: 'pointer', color: 'grey' }}/>
-                </Link>
-                <DeleteForeverIcon 
-                  onClick={() => handleOpenDeleteIssueModal()} 
-                  sx={{ cursor: 'pointer', color: 'red' }}
-                />
-              </span>
-            </Typography>
-            <Typography sx={{ marginTop: 2 }}>
-              {deadline}
-            </Typography>
-            <Typography sx={{ marginTop: 2 }}>
-              18.11.2022 22:44 (edited on 08.02.2023 19:50) 
-            </Typography>
-          </Container>
-        </Paper>
+        {comments}
       </Container>
     </>
   );
