@@ -107,7 +107,7 @@ export default function EditIssue(props) {
           </Typography>
         </Toolbar>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <Container>
+          <Container sx={{ marginTop: 2, marginBottom: 2 }}>
             <TextField
               required
               fullWidth
@@ -119,7 +119,7 @@ export default function EditIssue(props) {
               helperText={errorTitle ? "This field is required" : null}
               error={errorTitle}
               onChange={handleOnChange}
-              sx={{ marginTop: 3 }}
+              sx={{ marginTop: 2 }}
             />
             <TextField
               required
@@ -184,8 +184,7 @@ export default function EditIssue(props) {
             <Button variant="contained" onClick={handleCreateIssue} sx={{
                 backgroundColor: blue[500], color: 'white',
                 marginTop: 2,
-                marginRight: 1,
-                marginBottom: 2
+                marginRight: 1
               }}>
               Save
             </Button>
@@ -197,8 +196,7 @@ export default function EditIssue(props) {
                   bgcolor: red[700],
                   color: 'white',
                 }, 
-                marginTop: 2,
-                marginBottom: 2 }}>
+                marginTop: 2 }}>
               Cancel
             </Button>
           </Container>
