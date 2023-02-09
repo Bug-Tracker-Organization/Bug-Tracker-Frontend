@@ -9,7 +9,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
 import { Link, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export default function IssueDetail(props) {
 
@@ -31,7 +33,16 @@ export default function IssueDetail(props) {
   // Modal 2 - Delete comment
   const [currentCommentId, setCurrentCommentId] = useState('');
   const [currentCommentCommenterName, setCurrentCommentCommenterName] = useState('');
-  const [currentCommentCreationDateAndTime, setCurrentCommentCreationDateAndTime] = useState('');
+  const [currentCommentCreatedDateAndTime, setCurrentCommentCreatedDateAndTime] = useState('');
+
+  // Modal 3 - Edit comment
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [editCurrentCommentMessage, setCurrentEditCommentMessage] = useState('');
+  const errorCurrentEditCommentMessage = submitClicked && editCurrentCommentMessage === '';
+  const [editCurrentCommentId, setCurrentEditCommentId] = useState('');
+  const [editCurrentCommentName, setCurrentEditCommentName] = useState('');
+  const [editCurrentCommentCreatedDateAndTime, setCurrentEditCommentCreatedDateAndTime] = useState('');
+  const [editCurrentCommentEditedDateAndTime, setCurrentEditCommentEditedDateAndTime] = useState('');
   const navigate = useNavigate();
 
   function getStatusColor(status) {
@@ -50,11 +61,14 @@ export default function IssueDetail(props) {
       <Paper key={'paper: ' + id} sx={{ width: '100%', overflow: 'hidden', marginBottom: 2 }}>
         <Container key={'container: ' + id} sx={{ marginTop: 2, marginBottom: 2 }}>
           <Typography key={'type0: ' + id}>
-            <Link key={'link1: ' + id} to={"/user-profile"}><b>{name}</b></Link> says:
-              <span style={{ float: 'right' }}>
-                <Link key={'link2: ' + id} color="inherit" to={"/edit-issue"}>
-                  <EditIcon key={'icon1: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
-                </Link>
+            <Link key={'link1: ' + id} to={"/user-profile"}><b key={'b: ' + id}>{name}</b></Link> says:
+              <span key={'span: ' + id} style={{ float: 'right' }}>
+                <EditIcon 
+                  key={'icon1: ' + id} 
+                  sx={{ cursor: 'pointer', color: 'grey' }}
+                  onClick={() => handleOpenEditCommentModal(
+                    id, name, message, createdDateAndTime, editedDateAndTime)}
+                  />
                 <DeleteForeverIcon
                   key={'icon2: ' + id}
                   onClick={() => handleOpenDeleteCommentModal(id, name, createdDateAndTime)} 
@@ -66,7 +80,7 @@ export default function IssueDetail(props) {
             {message}
           </Typography>
           <Typography key={'type2: ' + id} sx={{ marginTop: 2 }}>
-            {createdDateAndTime} {editedDateAndTime ? '(edited on ' + editedDateAndTime + ')' : null}
+            <i key={'i: ' + id}>{createdDateAndTime} {editedDateAndTime ? '(edited on ' + editedDateAndTime + ')' : null}</i>
           </Typography>
         </Container>
       </Paper> 
@@ -89,10 +103,10 @@ export default function IssueDetail(props) {
 
   // Modal 2 - Delete comment
   const [openDeleteCommentModal, setOpenDeleteCommentModal] = useState(false);
-  const handleOpenDeleteCommentModal = (id, commenterName, creationDateAndTime) => {
+  const handleOpenDeleteCommentModal = (id, commenterName, createdDateAndTime) => {
     setCurrentCommentId(id);
     setCurrentCommentCommenterName(commenterName);
-    setCurrentCommentCreationDateAndTime(creationDateAndTime);
+    setCurrentCommentCreatedDateAndTime(createdDateAndTime);
     setOpenDeleteCommentModal(true);
   };
   
@@ -103,6 +117,65 @@ export default function IssueDetail(props) {
     // Remove comment from the UI
     setComments([...comments.filter((comment) => comment.props.children.key !== "paper: " + currentCommentId)]);
     setOpenDeleteCommentModal(false);
+  }
+
+  // Modal 3 - Edit comment
+  const [openEditCommentModal, setOpenEditCommentModal] = useState(false);
+  const handleOpenEditCommentModal = (id, name, message, createdDateAndTime, editedDateAndTime) => {
+    setCurrentEditCommentId(id);
+    setCurrentEditCommentName(name);
+    setCurrentEditCommentMessage(message);
+    setCurrentEditCommentCreatedDateAndTime(createdDateAndTime);
+    setCurrentEditCommentEditedDateAndTime(editedDateAndTime);
+    setOpenEditCommentModal(true);
+  };
+  
+  const handleCloseEditCommentModal = () => {
+    setSubmitClicked(false);
+    setOpenEditCommentModal(false);
+  };
+
+  const handleEditCommentSubmission = () => {
+    if (editCurrentCommentMessage !== '') {
+        // Send request to edit comment
+        // To edit the page, you might just want to fetch the data again
+        // Or add a new data to createData(): index to modify the array
+
+        const currentDateAndTime = dayjs().format('MM.DD.YYYY HH:mm').toString();
+
+        // Edit comment on page
+
+        // Set edited date and time
+
+        const editArr = comments.slice();
+        editArr[editCurrentCommentId] = 
+          createData(
+            editCurrentCommentId,
+            editCurrentCommentName,
+            editCurrentCommentMessage,
+            editCurrentCommentCreatedDateAndTime,
+            currentDateAndTime); // Id change to index in the future
+        setComments(editArr);
+
+        // Reset the Modal
+        setSubmitClicked(false);
+        setOpenEditCommentModal(false);
+    } else {
+      setSubmitClicked(true);
+    }
+  }
+
+  function handleOnEditCommentMessageChange(event) {
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+
+    switch(eventName) {
+      case 'editCurrentCommentMessage':
+        setCurrentEditCommentMessage(eventValue);
+        break;
+      default:
+        console.log('Could not read eventName: ' + eventName);
+    }
   }
 
   const style = {
@@ -119,6 +192,52 @@ export default function IssueDetail(props) {
 
   return (
     <>
+      <Modal
+        open={openEditCommentModal}
+        onClose={handleCloseEditCommentModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Edit Comment from <i>{editCurrentCommentName}</i> on <i>{editCurrentCommentCreatedDateAndTime}</i> 
+            {editCurrentCommentEditedDateAndTime ? ' edited on ' : null}
+            <i>{editCurrentCommentEditedDateAndTime ? editCurrentCommentEditedDateAndTime : null}</i>
+          </Typography>
+          <TextField
+            required
+            id="outlined-multiline-static"
+            label="Edit Comment Message"
+            name="editCurrentCommentMessage"
+            fullWidth
+            multiline
+            defaultValue={editCurrentCommentMessage}
+            helperText={errorCurrentEditCommentMessage ? "This field is required" : null}
+            error={errorCurrentEditCommentMessage}
+            onChange={handleOnEditCommentMessageChange}
+            rows={4}
+            sx={{ marginTop: 2, marginBottom: 2 }}
+          />
+          <Button variant="contained" onClick={handleEditCommentSubmission} sx={{
+              backgroundColor: blue[500], color: 'white',
+              marginTop: 2,
+              marginRight: 1,
+            }}>
+            Create Issue
+          </Button>
+          <Button variant="contained" onClick={handleCloseEditCommentModal} 
+            sx={{ 
+              backgroundColor: 'red', 
+              color: 'white',
+              ':hover': {
+                bgcolor: red[700],
+                color: 'white',
+              }, 
+              marginTop: 2 }}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
       <Modal
         open={openDeleteIssueModal}
         onClose={handleCloseDeleteIssueModal}
@@ -160,7 +279,7 @@ export default function IssueDetail(props) {
             Remove Comment
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            You are about to remove the comment from the user <i>{currentCommentCommenterName}</i> from <i>{currentCommentCreationDateAndTime}</i>. Continue?
+            You are about to remove the comment from the user <i>{currentCommentCommenterName}</i> from <i>{currentCommentCreatedDateAndTime}</i>. Continue?
           </Typography>
           <Button variant="contained" onClick={handleRemoveComment} sx={{
               backgroundColor: 'red', 
