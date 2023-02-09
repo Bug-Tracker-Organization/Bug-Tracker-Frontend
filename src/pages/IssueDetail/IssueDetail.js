@@ -22,6 +22,7 @@ export default function IssueDetail(props) {
   const [status, setStatus] = useState('STATUS NOT FOUND');
   const [issuedOn, setIssuedOn] = useState('ISSUED ON NOT FOUND');
   const [lastChanged, setLastChanged] = useState('LAST CHANGED NOT FOUND');
+  const [numberOfComments, setNumberOfComments] = useState(0);
   const navigate = useNavigate();
 
   function getStatusColor(status) {
@@ -102,7 +103,7 @@ export default function IssueDetail(props) {
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <Container sx={{ marginTop: 2, marginBottom: 2 }}>
             <Typography>
-              Assigned to: <b>{assignedTo}</b>
+              Assigned to: <Link to={"/user-profile"}><b>{assignedTo}</b></Link>
               <span style={{ float: 'right' }}>
                 <Link color="inherit" to={"/edit-issue"}>
                   <EditIcon sx={{ cursor: 'pointer', color: 'grey' }}/>
@@ -117,7 +118,7 @@ export default function IssueDetail(props) {
               Deadline: <b>{deadline}</b>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
-              Assigned by: <b>{assignedBy}</b>
+              Assigned by: <Link to={"/user-profile"}><b>{assignedBy}</b></Link>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
               Status: <span style={{ color: getStatusColor(status) }}>{status}</span>
@@ -134,6 +135,35 @@ export default function IssueDetail(props) {
             <Typography>
               {description}
             </Typography>            
+          </Container>
+        </Paper>
+      </Container>
+      <Container>
+        <Toolbar>
+          <Typography variant="h6" component="h2">
+            Comments ({numberOfComments})
+          </Typography>
+        </Toolbar>
+        <Paper sx={{ width: '100%', overflow: 'hidden', marginBottom: 2 }}>
+          <Container sx={{ marginTop: 2, marginBottom: 2 }}>
+            <Typography>
+              <Link to={"/user-profile"}><b>{assignedTo}</b></Link> says:
+              <span style={{ float: 'right' }}>
+                <Link color="inherit" to={"/edit-issue"}>
+                  <EditIcon sx={{ cursor: 'pointer', color: 'grey' }}/>
+                </Link>
+                <DeleteForeverIcon 
+                  onClick={() => handleOpenDeleteIssueModal()} 
+                  sx={{ cursor: 'pointer', color: 'red' }}
+                />
+              </span>
+            </Typography>
+            <Typography sx={{ marginTop: 2 }}>
+              {deadline}
+            </Typography>
+            <Typography sx={{ marginTop: 2 }}>
+              18.11.2022 22:44 (edited on 08.02.2023 19:50) 
+            </Typography>
           </Container>
         </Paper>
       </Container>

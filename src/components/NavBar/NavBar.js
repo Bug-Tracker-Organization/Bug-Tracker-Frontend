@@ -117,9 +117,11 @@ export default function NavBar(props) {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <MenuItem onClick={handleClose}>
-                  <Avatar /> Profile
-                </MenuItem>
+                <Link to={"/user-profile"}>
+                  <MenuItem onClick={handleClose}>
+                    <Avatar /> Profile
+                  </MenuItem>
+                </Link>
                 <MenuItem onClick={handleClose}>
                   <Avatar /> User Management
                 </MenuItem>
