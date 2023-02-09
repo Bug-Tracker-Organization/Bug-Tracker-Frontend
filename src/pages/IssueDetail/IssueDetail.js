@@ -103,7 +103,7 @@ export default function IssueDetail(props) {
           <Container sx={{ marginTop: 2, marginBottom: 2 }}>
             <Typography>
               Assigned to: <b>{assignedTo}</b>
-              <Typography display="inline" sx={{ float: 'right' }}>
+              <span style={{ float: 'right' }}>
                 <Link color="inherit" to={"/edit-issue"}>
                   <EditIcon sx={{ cursor: 'pointer', color: 'grey' }}/>
                 </Link>
@@ -111,7 +111,7 @@ export default function IssueDetail(props) {
                   onClick={() => handleOpenDeleteIssueModal()} 
                   sx={{ cursor: 'pointer', color: 'red' }}
                 />
-              </Typography>
+              </span>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
               Deadline: <b>{deadline}</b>
@@ -120,7 +120,7 @@ export default function IssueDetail(props) {
               Assigned by: <b>{assignedBy}</b>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
-              Status: <Typography display="inline" sx={{ color: getStatusColor(status) }}>{status}</Typography>
+              Status: <span style={{ color: getStatusColor(status) }}>{status}</span>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
               Issued on: <b>{issuedOn}</b>
