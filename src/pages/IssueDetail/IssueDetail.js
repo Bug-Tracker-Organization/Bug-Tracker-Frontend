@@ -147,7 +147,7 @@ export default function IssueDetail(props) {
 
         // Set edited date and time
 
-        const editArr = comments.slice();
+        const editArr = [...comments];
         editArr[editCurrentCommentId] = 
           createData(
             editCurrentCommentId,
