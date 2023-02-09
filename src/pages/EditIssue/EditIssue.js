@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
+import Paper from '@mui/material/Paper';
 
 export default function EditIssue(props) {
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
@@ -105,97 +106,103 @@ export default function EditIssue(props) {
             Edit Issue
           </Typography>
         </Toolbar>
-        <TextField
-          required
-          fullWidth
-          id="title"
-          label="Title"
-          name="title"
-          autoComplete="title"
-          defaultValue={title}
-          helperText={errorTitle ? "This field is required" : null}
-          error={errorTitle}
-          onChange={handleOnChange}
-          sx={{ marginTop: 2 }}
-        />
-        <TextField
-          required
-          id="outlined-multiline-static"
-          label="Description"
-          name="description"
-          fullWidth
-          multiline
-          defaultValue={description}
-          helperText={errorDescription ? "This field is required" : null}
-          error={errorDescription}
-          onChange={handleOnChange}
-          rows={4}
-          sx={{ marginTop: 2, marginBottom: 2 }}
-        />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DesktopDatePicker
-            label="Deadline"
-            inputFormat="MM/DD/YYYY"
-            value={deadline}
-            defaultValue={deadline}
-            name="deadline"
-            error={errorDeadline}
-            onChange={handleDateChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        <FormControl fullWidth sx={{ marginTop: 2 }}>
-          <InputLabel id="assignedTo">Assigned to</InputLabel>
-          <Select
-            required
-            labelId="assignedTo"
-            id="assignedTo"
-            name="assignedTo"
-            value={assignedTo}
-            defaultValue={assignedTo}
-            label="Assigned to"
-            error={errorAssignedTo}
-            onChange={handleOnChange}
-          >
-            {users.map((item) => (
-              <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl fullWidth sx={{ marginTop: 2 }}>
-          <InputLabel id="status">Status</InputLabel>
-          <Select
-            labelId="status"
-            id="status"
-            name="status"
-            value={status}
-            label="Status"
-            onChange={handleOnChange}
-          >
-            <MenuItem value='Assigned'>Assigned</MenuItem>
-            <MenuItem value='In progress'>In progress</MenuItem>
-            <MenuItem value='Completed'>Completed</MenuItem>
-            <MenuItem value='Approved'>Approved</MenuItem>
-          </Select>
-        </FormControl>
-        <Button variant="contained" onClick={handleCreateIssue} sx={{
-            backgroundColor: blue[500], color: 'white',
-            marginTop: 2,
-            marginRight: 1,
-          }}>
-          Save
-        </Button>
-        <Button variant="contained" onClick={handleCloseCreateIssueModal} 
-          sx={{ 
-            backgroundColor: 'red', 
-            color: 'white',
-            ':hover': {
-              bgcolor: red[700],
-              color: 'white',
-            }, 
-            marginTop: 2 }}>
-          Cancel
-        </Button>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <Container>
+            <TextField
+              required
+              fullWidth
+              id="title"
+              label="Title"
+              name="title"
+              autoComplete="title"
+              defaultValue={title}
+              helperText={errorTitle ? "This field is required" : null}
+              error={errorTitle}
+              onChange={handleOnChange}
+              sx={{ marginTop: 3 }}
+            />
+            <TextField
+              required
+              id="outlined-multiline-static"
+              label="Description"
+              name="description"
+              fullWidth
+              multiline
+              defaultValue={description}
+              helperText={errorDescription ? "This field is required" : null}
+              error={errorDescription}
+              onChange={handleOnChange}
+              rows={4}
+              sx={{ marginTop: 2, marginBottom: 2 }}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DesktopDatePicker
+                label="Deadline"
+                inputFormat="MM/DD/YYYY"
+                value={deadline}
+                defaultValue={deadline}
+                name="deadline"
+                error={errorDeadline}
+                onChange={handleDateChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel id="assignedTo">Assigned to</InputLabel>
+              <Select
+                required
+                labelId="assignedTo"
+                id="assignedTo"
+                name="assignedTo"
+                value={assignedTo}
+                defaultValue={assignedTo}
+                label="Assigned to"
+                error={errorAssignedTo}
+                onChange={handleOnChange}
+              >
+                {users.map((item) => (
+                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel id="status">Status</InputLabel>
+              <Select
+                labelId="status"
+                id="status"
+                name="status"
+                value={status}
+                label="Status"
+                onChange={handleOnChange}
+              >
+                <MenuItem value='Assigned'>Assigned</MenuItem>
+                <MenuItem value='In progress'>In progress</MenuItem>
+                <MenuItem value='Completed'>Completed</MenuItem>
+                <MenuItem value='Approved'>Approved</MenuItem>
+              </Select>
+            </FormControl>
+            <Button variant="contained" onClick={handleCreateIssue} sx={{
+                backgroundColor: blue[500], color: 'white',
+                marginTop: 2,
+                marginRight: 1,
+                marginBottom: 2
+              }}>
+              Save
+            </Button>
+            <Button variant="contained" onClick={handleCloseCreateIssueModal} 
+              sx={{ 
+                backgroundColor: 'red', 
+                color: 'white',
+                ':hover': {
+                  bgcolor: red[700],
+                  color: 'white',
+                }, 
+                marginTop: 2,
+                marginBottom: 2 }}>
+              Cancel
+            </Button>
+          </Container>
+        </Paper>
       </Container>
     </>
   );
