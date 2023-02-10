@@ -48,6 +48,7 @@ export default function IssueDetail(props) {
   const [newCommentMessageSubmitClicked, setNewCommentMessageSubmitClicked] = useState(false);
   const [newCommentMessage, setNewCommentMessage] = useState('');
   const errorNewCommentMessage = newCommentMessageSubmitClicked && newCommentMessage === '';
+  const [userName, setUserName] = useState('USER\'S NAME NOT FOUND');
   const navigate = useNavigate();
 
   function getStatusColor(status) {
@@ -139,6 +140,31 @@ export default function IssueDetail(props) {
     setSubmitClicked(false);
     setOpenEditCommentModal(false);
   };
+
+  const handleNewCommentSubmission = () => {
+      if (newCommentMessage !== '') {
+        // Send request to edit comment
+        // To edit the page, you might just want to fetch the data again
+        // Or add a new data to createData(): index to modify the array
+
+        const currentDateAndTime = dayjs().format('MM.DD.YYYY HH:mm').toString();
+
+        // Add comment on page
+        setComments([...comments, 
+          createData(
+            comments.length,
+            userName,
+            newCommentMessage,
+            currentDateAndTime,
+            null) // Id change to index in the future
+          ]);
+
+        // Reset comment text field
+        setNewCommentMessageSubmitClicked(false);
+    } else {
+      setNewCommentMessageSubmitClicked(true);
+    }    
+  }
 
   const handleEditCommentSubmission = () => {
     if (editCurrentCommentMessage !== '') {
@@ -378,6 +404,12 @@ export default function IssueDetail(props) {
             rows={4}
             sx={{ marginTop: 2, marginBottom: 2 }}
           />
+          <Button variant="contained" onClick={handleNewCommentSubmission} sx={{
+              backgroundColor: blue[500], color: 'white',
+              marginBottom: 2,
+            }}>
+            Add comment
+          </Button>
       </Container>
     </>
   );
