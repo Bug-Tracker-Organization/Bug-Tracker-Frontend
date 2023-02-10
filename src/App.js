@@ -10,6 +10,7 @@ import IssuesOverview from './pages/IssuesOverview/IssuesOverview';
 import EditIssue from './pages/EditIssue/EditIssue';
 import IssueDetail from './pages/IssueDetail/IssueDetail';
 import UserProfile from './pages/UserProfile/UserProfile';
+import ProfileEditing from './pages/ProfileEditing/ProfileEditing';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -119,6 +120,17 @@ function App() {
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
           <UserProfile isUserLoggedIn={isUserLoggedIn}/>
+        </>,
+    },
+    {
+      path: "/profile-editing",
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <ProfileEditing isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
   ]);

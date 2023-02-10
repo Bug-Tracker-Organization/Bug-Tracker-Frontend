@@ -18,7 +18,7 @@ import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 
-export default function EditIssue(props) {
+export default function ProfileEditing(props) {
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
   const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
   const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
@@ -102,7 +102,7 @@ export default function EditIssue(props) {
       <Container>
         <Toolbar>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Edit Issue
+            Profile Editing
           </Typography>
         </Toolbar>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
