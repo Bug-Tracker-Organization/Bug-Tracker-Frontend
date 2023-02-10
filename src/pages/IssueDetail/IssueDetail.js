@@ -43,6 +43,11 @@ export default function IssueDetail(props) {
   const [editCurrentCommentName, setCurrentEditCommentName] = useState('');
   const [editCurrentCommentCreatedDateAndTime, setCurrentEditCommentCreatedDateAndTime] = useState('');
   const [editCurrentCommentEditedDateAndTime, setCurrentEditCommentEditedDateAndTime] = useState('');
+
+  // New comment
+  const [newCommentMessageSubmitClicked, setNewCommentMessageSubmitClicked] = useState(false);
+  const [newCommentMessage, setNewCommentMessage] = useState('');
+  const errorNewCommentMessage = newCommentMessageSubmitClicked && newCommentMessage === '';
   const navigate = useNavigate();
 
   function getStatusColor(status) {
@@ -145,8 +150,6 @@ export default function IssueDetail(props) {
 
         // Edit comment on page
 
-        // Set edited date and time
-
         const editArr = [...comments];
         editArr[editCurrentCommentId] = 
           createData(
@@ -163,6 +166,19 @@ export default function IssueDetail(props) {
     } else {
       setSubmitClicked(true);
     }
+  }
+
+  function handleOnNewCommentMessageChange(event) {
+    const eventName = event.target.name;
+    const eventValue = event.target.value;
+
+    switch(eventName) {
+      case 'newCommentMessage':
+        setNewCommentMessage(eventValue);
+        break;
+      default:
+        console.log('Could not read eventName: ' + eventName);
+    }    
   }
 
   function handleOnEditCommentMessageChange(event) {
@@ -349,6 +365,19 @@ export default function IssueDetail(props) {
           </Typography>
         </Toolbar>
         {comments}
+        <TextField
+            required
+            id="outlined-multiline-static"
+            label="Write a new comment..."
+            name="newCommentMessage"
+            fullWidth
+            multiline
+            helperText={errorNewCommentMessage ? "This field is required" : null}
+            error={errorNewCommentMessage}
+            onChange={handleOnNewCommentMessageChange}
+            rows={4}
+            sx={{ marginTop: 2, marginBottom: 2 }}
+          />
       </Container>
     </>
   );
