@@ -17,26 +17,34 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
+import LockIcon from '@mui/icons-material/Lock';
 
 export default function ProfileEditing(props) {
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [email, setEmail] = useState('EMAIL NOT FOUND');
+  const [username, setUsername] = useState('USERNAME NOT FOUND');
+  const [firstAndLastName, setFirstAndLastName] = useState('FIRST AND LAST NAME NOT FOUND');
+  const [receiveEmailNotifications, setReceiveEmailNotifications] = useState(true);
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
+  const errorOrganizationName = submitClicked && organizationName === '';
+  const [facebookLink, setFacebookLink] = useState('FACEBOOK LINK NOT FOUND');
+  const [twitterLink, setTwitterLink] = useState('TWITTER LINK NOT FOUND');
+  const [linkedInLink, setLinkedInLink] = useState('LINKED IN LINK NOT FOUND');
+  const [aboutMe, setAboutMe] = useState('ABOUT ME NOT FOUND');
+  const errorAboutMe = submitClicked && aboutMe === '';
   const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
   const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
   
   // For Modal 1 - Create Issue
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [title, setTitle] = useState('TITLE NOT FOUND');
-  const errorTitle = submitClicked && title === '';
-  const [description, setDescription] = useState('DESCRIPTION NOT FOUND');
-  const errorDescription = submitClicked && description === '';
   // Datepicker
   const [deadline, setDeadline] = React.useState(dayjs());
   const handleDateChange = (newDeadline) => {
     setDeadline(newDeadline);
   };
   const errorDeadline = submitClicked && dayjs(deadline).isValid();  
-  const [assignedTo, setAssignedTo] = useState(0);
-  const errorAssignedTo = submitClicked && assignedTo === '';
+  const [displayName, setDisplayName] = useState(0);
+  const errorDisplayName = submitClicked && displayName === '';
   const [status, setStatus] = useState('Assigned');
 
   const navigate = useNavigate();
@@ -55,17 +63,29 @@ export default function ProfileEditing(props) {
     const eventValue = event.target.value;
 
     switch(eventName) {
-      case 'title':
-        setTitle(eventValue);
+      case 'receiveEmailNotifications':
+        setReceiveEmailNotifications(!receiveEmailNotifications);
         break;
-      case 'description':
-        setDescription(eventValue);
+      case 'organizationName':
+        setOrganizationName(eventValue);
         break;
-      case 'assignedTo':
-        setAssignedTo(eventValue);
+      case 'aboutMe':
+        setAboutMe(eventValue);
+        break;
+      case 'displayName':
+        setDisplayName(eventValue);
         break;
       case 'status':
         setStatus(eventValue);
+        break;
+      case 'facebookLink':
+        setFacebookLink(eventValue);
+        break;
+      case 'twitterLink':
+        setTwitterLink(eventValue);
+        break;
+      case 'linkedInLink':
+        setLinkedInLink(eventValue);
         break;
       default:
         console.log('Could not read eventName: ' + eventName);
@@ -73,113 +93,132 @@ export default function ProfileEditing(props) {
   }
 
   const handleCloseCreateIssueModal = () => {
-    navigate('/issues-overview', {state: null});
+    navigate('/user-profile', {state: null});
   };
 
   const handleCreateIssue = () => {
 
-    if (title !== '' 
-      && description !== '' 
-      && assignedTo !== '' 
+    if (organizationName !== '' 
+      && aboutMe !== '' 
       && dayjs(deadline).isValid()) {
         // Send request to create to database
 
           // If submission success:
-          navigate('/issue-detail', {state: null});
+          navigate('/user-profile', {state: null});
 
     } else {
       setSubmitClicked(true);
     }
   }
 
-  const users = [{ id: 0, name: 'BR@mail.com' }, 
-    { id: 1, name: 'AU@mail.com' },
-    { id: 2, name: 'DE@mail.com' },
-    { id: 3, name: 'Lee@mail.com' }];
+  const displayNames = [{ id: 0, name: email }, 
+    { id: 1, name: username },
+    { id: 2, name: firstAndLastName }];
 
   return (
     <>
       <Container>
         <Toolbar>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography variant="h6" component="h2">
             Profile Editing
           </Typography>
         </Toolbar>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <Container sx={{ marginTop: 2, marginBottom: 2 }}>
+            <Typography>
+              <b>Email: </b>{email}
+            </Typography>
+            <Checkbox
+              name="receiveEmailNotifications"
+              checked={receiveEmailNotifications}
+              onChange={handleOnChange}
+            />
+            <Typography display='inline'>
+              Receive email notifications
+            </Typography>
+            <Link to='/change-password'>
+              <Typography>
+                <LockIcon fontSize='small'/> Change password
+              </Typography>
+            </Link>
             <TextField
               required
               fullWidth
-              id="title"
-              label="Title"
-              name="title"
-              autoComplete="title"
-              defaultValue={title}
-              helperText={errorTitle ? "This field is required" : null}
-              error={errorTitle}
+              id="organizationName"
+              label="Organization Name"
+              name="organizationName"
+              autoComplete="organizationName"
+              defaultValue={organizationName}
+              helperText={errorOrganizationName ? "This field is required" : null}
+              error={errorOrganizationName}
+              onChange={handleOnChange}
+              sx={{ marginTop: 2 }}
+            />
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel id="displayName">Display Name</InputLabel>
+              <Select
+                required
+                labelId="displayName"
+                id="displayName"
+                name="displayName"
+                value={displayName}
+                defaultValue={displayName}
+                label="Display Name"
+                error={errorDisplayName}
+                onChange={handleOnChange}
+              >
+                {displayNames.map((item) => (
+                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              required
+              fullWidth
+              id="facebookLink"
+              label="Facebook Link"
+              name="facebookLink"
+              autoComplete="facebookLink"
+              defaultValue={facebookLink}
+              onChange={handleOnChange}
+              sx={{ marginTop: 2 }}
+            />
+            <TextField
+              required
+              fullWidth
+              id="twitterLink"
+              label="Twitter Link"
+              name="twitterLink"
+              autoComplete="twitterLink"
+              defaultValue={twitterLink}
+              onChange={handleOnChange}
+              sx={{ marginTop: 2 }}
+            />
+            <TextField
+              required
+              fullWidth
+              id="linkedInLink"
+              label="LinkedIn Link"
+              name="linkedInLink"
+              autoComplete="linkedInLink"
+              defaultValue={linkedInLink}
               onChange={handleOnChange}
               sx={{ marginTop: 2 }}
             />
             <TextField
               required
               id="outlined-multiline-static"
-              label="Description"
-              name="description"
+              label="About me"
+              name="aboutMe"
               fullWidth
               multiline
-              defaultValue={description}
-              helperText={errorDescription ? "This field is required" : null}
-              error={errorDescription}
+              defaultValue={aboutMe}
+              helperText={errorAboutMe ? "This field is required" : null}
+              error={errorAboutMe}
               onChange={handleOnChange}
               rows={4}
               sx={{ marginTop: 2, marginBottom: 2 }}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Deadline"
-                inputFormat="MM/DD/YYYY"
-                value={deadline}
-                defaultValue={deadline}
-                name="deadline"
-                error={errorDeadline}
-                onChange={handleDateChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-            <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <InputLabel id="assignedTo">Assigned to</InputLabel>
-              <Select
-                required
-                labelId="assignedTo"
-                id="assignedTo"
-                name="assignedTo"
-                value={assignedTo}
-                defaultValue={assignedTo}
-                label="Assigned to"
-                error={errorAssignedTo}
-                onChange={handleOnChange}
-              >
-                {users.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <InputLabel id="status">Status</InputLabel>
-              <Select
-                labelId="status"
-                id="status"
-                name="status"
-                value={status}
-                label="Status"
-                onChange={handleOnChange}
-              >
-                <MenuItem value='Assigned'>Assigned</MenuItem>
-                <MenuItem value='In progress'>In progress</MenuItem>
-                <MenuItem value='Completed'>Completed</MenuItem>
-                <MenuItem value='Approved'>Approved</MenuItem>
-              </Select>
-            </FormControl>
             <Button variant="contained" onClick={handleCreateIssue} sx={{
                 backgroundColor: blue[500], color: 'white',
                 marginTop: 2,
