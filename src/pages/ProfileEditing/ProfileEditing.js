@@ -6,11 +6,6 @@ import { blue, red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import { Container } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-// Date
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -19,12 +14,18 @@ import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import LockIcon from '@mui/icons-material/Lock';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 export default function ProfileEditing(props) {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [email, setEmail] = useState('EMAIL NOT FOUND');
   const [username, setUsername] = useState('USERNAME NOT FOUND');
+  const [address, setAddress] = useState('ADDRESS NOT FOUND');
   const [firstAndLastName, setFirstAndLastName] = useState('FIRST AND LAST NAME NOT FOUND');
+  const errorFirstAndLastName = submitClicked && firstAndLastName === '';
+  const [position, setPosition] = useState('POSITION NAME NOT FOUND');
+  const [phone, setPhone] = useState('PHONE NAME NOT FOUND');
   const [receiveEmailNotifications, setReceiveEmailNotifications] = useState(true);
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
   const errorOrganizationName = submitClicked && organizationName === '';
@@ -32,20 +33,10 @@ export default function ProfileEditing(props) {
   const [twitterLink, setTwitterLink] = useState('TWITTER LINK NOT FOUND');
   const [linkedInLink, setLinkedInLink] = useState('LINKED IN LINK NOT FOUND');
   const [aboutMe, setAboutMe] = useState('ABOUT ME NOT FOUND');
-  const errorAboutMe = submitClicked && aboutMe === '';
-  const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
-  const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
   
   // For Modal 1 - Create Issue
-  // Datepicker
-  const [deadline, setDeadline] = React.useState(dayjs());
-  const handleDateChange = (newDeadline) => {
-    setDeadline(newDeadline);
-  };
-  const errorDeadline = submitClicked && dayjs(deadline).isValid();  
   const [displayName, setDisplayName] = useState(0);
   const errorDisplayName = submitClicked && displayName === '';
-  const [status, setStatus] = useState('Assigned');
 
   const navigate = useNavigate();
 
@@ -68,6 +59,21 @@ export default function ProfileEditing(props) {
         break;
       case 'organizationName':
         setOrganizationName(eventValue);
+        break;
+      case 'username':
+        setUsername(eventValue);
+        break;
+      case 'address':
+          setAddress(eventValue);
+          break;
+      case 'firstAndLastName':
+        setFirstAndLastName(eventValue);
+        break;
+      case 'position':
+        setPosition(eventValue);
+        break;
+      case 'phone':
+        setPhone(eventValue);
         break;
       case 'aboutMe':
         setAboutMe(eventValue);
@@ -99,8 +105,7 @@ export default function ProfileEditing(props) {
   const handleCreateIssue = () => {
 
     if (organizationName !== '' 
-      && aboutMe !== '' 
-      && dayjs(deadline).isValid()) {
+      && firstAndLastName !== '') {
         // Send request to create to database
 
           // If submission success:
@@ -154,24 +159,89 @@ export default function ProfileEditing(props) {
               onChange={handleOnChange}
               sx={{ marginTop: 2 }}
             />
-            <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <InputLabel id="displayName">Display Name</InputLabel>
-              <Select
-                required
-                labelId="displayName"
-                id="displayName"
-                name="displayName"
-                value={displayName}
-                defaultValue={displayName}
-                label="Display Name"
-                error={errorDisplayName}
-                onChange={handleOnChange}
-              >
-                {displayNames.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="username"
+                    defaultValue={username}
+                    onChange={handleOnChange}
+                    sx={{ marginTop: 2 }}
+                  />
+                  <FormControl fullWidth sx={{ marginTop: 2 }}>
+                    <InputLabel id="displayName">Display Name</InputLabel>
+                    <Select
+                      required
+                      labelId="displayName"
+                      id="displayName"
+                      name="displayName"
+                      value={displayName}
+                      defaultValue={displayName}
+                      label="Display Name"
+                      error={errorDisplayName}
+                      onChange={handleOnChange}
+                    >
+                      {displayNames.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    required
+                    fullWidth
+                    id="address"
+                    label="Address"
+                    name="address"
+                    autoComplete="address"
+                    defaultValue={address}
+                    onChange={handleOnChange}
+                    sx={{ marginTop: 2 }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="firstAndLastName"
+                    label="First and Last Name"
+                    name="firstAndLastName"
+                    autoComplete="firstAndLastName"
+                    defaultValue={firstAndLastName}
+                    helperText={errorFirstAndLastName ? "This field is required" : null}
+                    error={errorFirstAndLastName}
+                    onChange={handleOnChange}
+                    sx={{ marginTop: 2 }}
+                  />
+                  <TextField
+                    required
+                    fullWidth
+                    id="position"
+                    label="Position within Organization"
+                    name="position"
+                    autoComplete="position"
+                    defaultValue={position}
+                    onChange={handleOnChange}
+                    sx={{ marginTop: 2 }}
+                  />
+                  <TextField
+                    required
+                    fullWidth
+                    id="phone"
+                    label="Phone"
+                    name="phone"
+                    autoComplete="phone"
+                    defaultValue={phone}
+                    onChange={handleOnChange}
+                    sx={{ marginTop: 2 }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
             <TextField
               required
               fullWidth
@@ -213,8 +283,6 @@ export default function ProfileEditing(props) {
               fullWidth
               multiline
               defaultValue={aboutMe}
-              helperText={errorAboutMe ? "This field is required" : null}
-              error={errorAboutMe}
               onChange={handleOnChange}
               rows={4}
               sx={{ marginTop: 2, marginBottom: 2 }}
