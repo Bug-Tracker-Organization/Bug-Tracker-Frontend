@@ -33,8 +33,6 @@ export default function ProfileEditing(props) {
   const [twitterLink, setTwitterLink] = useState('TWITTER LINK NOT FOUND');
   const [linkedInLink, setLinkedInLink] = useState('LINKED IN LINK NOT FOUND');
   const [aboutMe, setAboutMe] = useState('ABOUT ME NOT FOUND');
-  
-  // For Modal 1 - Create Issue
   const [displayName, setDisplayName] = useState(0);
   const errorDisplayName = submitClicked && displayName === '';
 
@@ -48,6 +46,7 @@ export default function ProfileEditing(props) {
     }
   }, [props.isUserLoggedIn]);
   */
+
   function handleOnChange(event) {
 
     const eventName = event.target.name;
@@ -63,6 +62,9 @@ export default function ProfileEditing(props) {
       case 'username':
         setUsername(eventValue);
         break;
+      case 'displayName':
+        setDisplayName(eventValue);
+        break;
       case 'address':
           setAddress(eventValue);
           break;
@@ -75,15 +77,6 @@ export default function ProfileEditing(props) {
       case 'phone':
         setPhone(eventValue);
         break;
-      case 'aboutMe':
-        setAboutMe(eventValue);
-        break;
-      case 'displayName':
-        setDisplayName(eventValue);
-        break;
-      case 'status':
-        setStatus(eventValue);
-        break;
       case 'facebookLink':
         setFacebookLink(eventValue);
         break;
@@ -92,6 +85,9 @@ export default function ProfileEditing(props) {
         break;
       case 'linkedInLink':
         setLinkedInLink(eventValue);
+        break;
+      case 'aboutMe':
+        setAboutMe(eventValue);
         break;
       default:
         console.log('Could not read eventName: ' + eventName);
