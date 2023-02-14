@@ -12,6 +12,7 @@ import IssueDetail from './pages/IssueDetail/IssueDetail';
 import UserProfile from './pages/UserProfile/UserProfile';
 import ProfileEditing from './pages/ProfileEditing/ProfileEditing';
 import ChangePassword from './pages/ChangePassword/ChangePassword';
+import UserManagement from './pages/UserManagement/UserManagement';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -143,6 +144,17 @@ function App() {
             onUserLoginStatusChange={handleUserLoggedInChange}
           />
           <ChangePassword isUserLoggedIn={isUserLoggedIn}/>
+        </>,
+    },
+    {
+      path: "/user-management",
+      element: 
+        <> 
+          <NavBar 
+            isUserLoggedIn={isUserLoggedIn}
+            onUserLoginStatusChange={handleUserLoggedInChange}
+          />
+          <UserManagement isUserLoggedIn={isUserLoggedIn}/>
         </>,
     },
   ]);

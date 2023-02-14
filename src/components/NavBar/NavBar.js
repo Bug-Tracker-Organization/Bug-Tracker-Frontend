@@ -122,9 +122,11 @@ export default function NavBar(props) {
                     <Avatar /> Profile
                   </MenuItem>
                 </Link>
-                <MenuItem onClick={handleClose}>
-                  <Avatar /> User Management
-                </MenuItem>
+                <Link to={"/user-management"}>
+                  <MenuItem onClick={handleClose}>
+                    <Avatar /> User Management
+                  </MenuItem>
+                </Link>
                 <Divider />
                 <MenuItem onClick={handleLogOutButton}>
                   <ListItemIcon>
