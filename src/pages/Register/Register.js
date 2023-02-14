@@ -39,7 +39,7 @@ export default function Register(props) {
   const errorOrganization = submitClicked && organization === '';
   const errorEmail = submitClicked && email === '';
   const errorPassword = submitClicked && password === '';
-  const errorRepeatPassword = submitClicked && repeatPassword === '';
+  const errorRepeatPassword = submitClicked && (repeatPassword === '' || repeatPassword !== password);
 
   if (props.isUserLoggedIn) {
     navigate('/issues-overview', {state: null});
@@ -69,7 +69,7 @@ export default function Register(props) {
   }
 
   const handleSubmit = (event) => {
-    if (email !== '' && password !== '') {
+    if (email !== '' && password !== '' && !errorRepeatPassword) {
       fetch('apiLink', {
         method: 'POST',
         headers: {
@@ -175,7 +175,7 @@ export default function Register(props) {
                   type="password"
                   id="repeatPassword"
                   autoComplete="new-password"
-                  helperText={errorRepeatPassword ? "This field is required" : null}
+                  helperText={errorRepeatPassword ? "This field is required and must match the above password" : null}
                   error={errorRepeatPassword}
                   onChange={handleOnChange}
                 />
