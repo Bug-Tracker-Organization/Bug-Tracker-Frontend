@@ -5,40 +5,18 @@ import Button from '@mui/material/Button';
 import { blue, red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import { Container } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-// Date
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { useNavigate } from 'react-router-dom';
 import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 
 export default function ChangePassword(props) {
-  const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
-  const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
-  const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
-  
-  // For Modal 1 - Create Issue
   const [submitClicked, setSubmitClicked] = useState(false);
-  const [title, setTitle] = useState('TITLE NOT FOUND');
-  const errorTitle = submitClicked && title === '';
-  const [description, setDescription] = useState('DESCRIPTION NOT FOUND');
-  const errorDescription = submitClicked && description === '';
-  // Datepicker
-  const [deadline, setDeadline] = React.useState(dayjs());
-  const handleDateChange = (newDeadline) => {
-    setDeadline(newDeadline);
-  };
-  const errorDeadline = submitClicked && dayjs(deadline).isValid();  
-  const [assignedTo, setAssignedTo] = useState(0);
-  const errorAssignedTo = submitClicked && assignedTo === '';
-  const [status, setStatus] = useState('Assigned');
-
+  const [currentPassword, setCurrentPassword] = useState('');
+  const errorCurrentPassword = submitClicked && currentPassword === '';
+  const [newPassword, setNewPassword] = useState('');
+  const errorNewPassword = submitClicked && newPassword === '';
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const errorRepeatPassword = submitClicked && (repeatPassword === '' || newPassword !== repeatPassword);
   const navigate = useNavigate();
 
   // Doesn't work
@@ -55,17 +33,14 @@ export default function ChangePassword(props) {
     const eventValue = event.target.value;
 
     switch(eventName) {
-      case 'title':
-        setTitle(eventValue);
+      case 'currentPassword':
+        setCurrentPassword(eventValue);
         break;
-      case 'description':
-        setDescription(eventValue);
+      case 'newPassword':
+        setNewPassword(eventValue);
         break;
-      case 'assignedTo':
-        setAssignedTo(eventValue);
-        break;
-      case 'status':
-        setStatus(eventValue);
+      case 'repeatPassword':
+        setRepeatPassword(eventValue);
         break;
       default:
         console.log('Could not read eventName: ' + eventName);
@@ -73,29 +48,24 @@ export default function ChangePassword(props) {
   }
 
   const handleCloseCreateIssueModal = () => {
-    navigate('/issues-overview', {state: null});
+    navigate('/profile-editing', {state: null});
   };
 
   const handleCreateIssue = () => {
 
-    if (title !== '' 
-      && description !== '' 
-      && assignedTo !== '' 
-      && dayjs(deadline).isValid()) {
+    if (currentPassword !== ''
+      && newPassword !== ''
+      && repeatPassword !== ''
+      && newPassword === repeatPassword) {
         // Send request to create to database
 
           // If submission success:
-          navigate('/issue-detail', {state: null});
-
+          navigate('/profile-editing', {state: null});
+          
     } else {
       setSubmitClicked(true);
     }
   }
-
-  const users = [{ id: 0, name: 'BR@mail.com' }, 
-    { id: 1, name: 'AU@mail.com' },
-    { id: 2, name: 'DE@mail.com' },
-    { id: 3, name: 'Lee@mail.com' }];
 
   return (
     <>
@@ -110,76 +80,44 @@ export default function ChangePassword(props) {
             <TextField
               required
               fullWidth
-              id="title"
-              label="Title"
-              name="title"
-              autoComplete="title"
-              defaultValue={title}
-              helperText={errorTitle ? "This field is required" : null}
-              error={errorTitle}
+              id="currentPassword"
+              label="Current Password"
+              name="currentPassword"
+              autoComplete="currentPassword"
+              defaultValue={currentPassword}
+              helperText={errorCurrentPassword ? "This field is required" : null}
+              error={errorCurrentPassword}
               onChange={handleOnChange}
               sx={{ marginTop: 2 }}
             />
             <TextField
               required
-              id="outlined-multiline-static"
-              label="Description"
-              name="description"
               fullWidth
-              multiline
-              defaultValue={description}
-              helperText={errorDescription ? "This field is required" : null}
-              error={errorDescription}
+              type="password"
+              id="newPassword"
+              label="New Password"
+              name="newPassword"
+              autoComplete="newPassword"
+              defaultValue={newPassword}
+              helperText={errorNewPassword ? "This field is required" : null}
+              error={errorNewPassword}
               onChange={handleOnChange}
-              rows={4}
-              sx={{ marginTop: 2, marginBottom: 2 }}
+              sx={{ marginTop: 2 }}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Deadline"
-                inputFormat="MM/DD/YYYY"
-                value={deadline}
-                defaultValue={deadline}
-                name="deadline"
-                error={errorDeadline}
-                onChange={handleDateChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-            <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <InputLabel id="assignedTo">Assigned to</InputLabel>
-              <Select
-                required
-                labelId="assignedTo"
-                id="assignedTo"
-                name="assignedTo"
-                value={assignedTo}
-                defaultValue={assignedTo}
-                label="Assigned to"
-                error={errorAssignedTo}
-                onChange={handleOnChange}
-              >
-                {users.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <InputLabel id="status">Status</InputLabel>
-              <Select
-                labelId="status"
-                id="status"
-                name="status"
-                value={status}
-                label="Status"
-                onChange={handleOnChange}
-              >
-                <MenuItem value='Assigned'>Assigned</MenuItem>
-                <MenuItem value='In progress'>In progress</MenuItem>
-                <MenuItem value='Completed'>Completed</MenuItem>
-                <MenuItem value='Approved'>Approved</MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              required
+              fullWidth
+              type="password"
+              id="repeatPassword"
+              label="Repeat Password"
+              name="repeatPassword"
+              autoComplete="repeatPassword"
+              defaultValue={repeatPassword}
+              helperText={errorRepeatPassword ? "This field is required and must match the above password" : null}
+              error={errorRepeatPassword}
+              onChange={handleOnChange}
+              sx={{ marginTop: 2 }}
+            />
             <Button variant="contained" onClick={handleCreateIssue} sx={{
                 backgroundColor: blue[500], color: 'white',
                 marginTop: 2,

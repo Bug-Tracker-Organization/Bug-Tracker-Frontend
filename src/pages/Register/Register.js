@@ -69,7 +69,10 @@ export default function Register(props) {
   }
 
   const handleSubmit = (event) => {
-    if (email !== '' && password !== '' && !errorRepeatPassword) {
+    if (email !== '' 
+      && password !== '' 
+      && repeatPassword !== '' 
+      && password === repeatPassword) {
       fetch('apiLink', {
         method: 'POST',
         headers: {
