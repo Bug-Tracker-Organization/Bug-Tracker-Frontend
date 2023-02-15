@@ -543,15 +543,15 @@ export default function IssuesOverview(props) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Issues Overview - {organizationName}  
           </Typography>
+        </Toolbar>
+        <Toolbar>
+        <TextField id="outlined-search" label="Search" type="search" onChange={handleSearchBarChange} sx={{ flexGrow: 1, position: 'absolute', left: 0 }}/>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, position: 'absolute', right: 0 }}>
             <Button className="new-issue-btn" onClick={handleOpenCreateIssueModal} 
               variant="contained" sx={{ backgroundColor: blue[500], color: 'white', }}>
               + New Issue
             </Button>
           </Typography>
-        </Toolbar>
-        <Toolbar>
-          <TextField id="outlined-search" label="Search" type="search" onChange={handleSearchBarChange} sx={{ flexGrow: 1, position: 'absolute', right: 0 }}/>
         </Toolbar>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 440 }}>
