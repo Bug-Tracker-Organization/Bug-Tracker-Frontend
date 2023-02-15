@@ -102,17 +102,21 @@ export default function IssuesOverview(props) {
     const target = event.target.value.toLowerCase();
     // Reset the page or else user will not show anything if on another page
     setPage(0);
-    setRows([...rowsTemp.filter((item) => {
+
+    // Filter objectData
+    const filteredData = [...objectData.filter((item) => {
       if (item.title.toLowerCase().includes(target)
         || item.assignedTo.toLowerCase().includes(target)
-        || item.deadline.toLowerCase().includes(target)
         || item.assignedBy.toLowerCase().includes(target)
+        || item.deadline.toLowerCase().includes(target)
         || item.issuedOn.toLowerCase().includes(target)
         || item.status.toLowerCase().includes(target)) {
         return true;
       }
       return false;
-    })]);
+    })];
+
+    setRows(getData(filteredData));
   }
 
   // Modal 1 - Create issue
@@ -142,24 +146,14 @@ export default function IssuesOverview(props) {
         const currentDateFormatted = dayjs().format('MM.DD.YYYY').toString();
         const assignedToUser = users[assignedTo] ? users[assignedTo].name : 'COULD NOT FIND USER NAME';
 
-        setRows([...rows, 
-          createData(
-            rows.length,
-            title, 
-            assignedToUser, 
-            currentUserName, 
-            deadlineFormatted,
-            currentDateFormatted,
-            status)]);
-        setRowsTemp([...rowsTemp,
-          createData(
-            rowsTemp.length,
-            title, 
-            assignedToUser,
-            currentUserName, 
-            deadlineFormatted,
-            currentDateFormatted,
-            status)]);
+        setObjectData([...objectData, 
+            { title: title, 
+              assignedTo: assignedToUser,
+              assignedBy: currentUserName, 
+              deadline: deadlineFormatted, 
+              issuedOn: currentDateFormatted, 
+              status: status
+            }]);
         // Reset the Modal
         setAssignedTo('');
         setSubmitClicked(false);
@@ -182,8 +176,9 @@ export default function IssuesOverview(props) {
     // Send request to delete from database
 
     // Remove from table
-    setRows([...rows.filter((item) => item.id !== currentIssueId)]);
-    setRowsTemp([...rowsTemp.filter((item) => item.id !== currentIssueId)]);
+    const newObjectData = [...objectData];
+    newObjectData.splice(currentIssueId, 1);
+    setObjectData(newObjectData);
     setOpenDeleteIssueModal(false);
   }
 
@@ -278,41 +273,122 @@ export default function IssuesOverview(props) {
     return 'green';
   }
 
-  const [rows, setRows] = useState([
-    createData(0, 'Bug problem 0', 'Kim@mail.com', 'IE@mail.com', '01.23.2023', '01.21.2023', 'Assigned'),
-    createData(1, 'Bug problem 1', 'Lee@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(2, 'Bug problem 2', 'John@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Completed'),
-    createData(3, 'Bug problem 3', 'Joseph@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Approved'),
-    createData(4, 'Bug problem 4', 'lchua@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(5, 'Bug problem 5', 'AU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(6, 'Bug problem 6', 'DE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(7, 'Bug problem 7', 'IE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(8, 'Bug problem 8', 'MX@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(9, 'Bug problem 9', 'JP@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(10, 'Bug problem 10', 'FR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(11, 'Bug problem 11', 'GB@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(12, 'Bug problem 12', 'RU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(13, 'Bug problem 13', 'NG@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(14, 'Bug problem 14', 'BR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
+  const [objectData, setObjectData] = useState([
+    { title: 'Bug problem 0', 
+      assignedTo: 'Kim@mail.com',
+      assignedBy: 'IE@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.21.2023', 
+      status: 'Assigned'
+    }, { title: 'Bug problem 1', 
+      assignedTo: 'Kim@mail.com',
+      assignedBy: 'IE@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.21.2023', 
+      status: 'Assigned'
+    }, { title: 'Bug problem 2',
+      assignedTo: 'John@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.21.2023', 
+      status: 'Completed'
+    }, { title: 'Bug problem 3',
+      assignedTo: 'Joseph@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.21.2023', 
+      status: 'Approved'
+    }, { title: 'Bug problem 4', 
+      assignedTo: 'lchua@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 5',
+      assignedTo: 'AU@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 6',
+      assignedTo: 'DE@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.21.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 7',
+      assignedTo: 'IE@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 8',
+      assignedTo: 'MX@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 9',
+      assignedTo: 'JP@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.21.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 10',
+      assignedTo: 'FR@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 11',
+      assignedTo: 'GB@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 12',
+      assignedTo: 'RU@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress' 
+    }, { title: 'Bug problem 13', 
+      assignedTo: 'NG@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    }, { title: 'Bug problem 14',
+      assignedTo: 'BR@mail.com',
+      assignedBy: 'AU@mail.com', 
+      deadline: '01.23.2023', 
+      issuedOn: '01.23.2023', 
+      status: 'In progress'
+    },
   ]);
-  
-  const [rowsTemp, setRowsTemp] = useState([
-    createData(0, 'Bug problem 0', 'Kim@mail.com', 'IE@mail.com', '01.23.2023', '01.21.2023', 'Assigned'),
-    createData(1, 'Bug problem 1', 'Lee@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(2, 'Bug problem 2', 'John@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Completed'),
-    createData(3, 'Bug problem 3', 'Joseph@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'Approved'),
-    createData(4, 'Bug problem 4', 'lchua@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(5, 'Bug problem 5', 'AU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(6, 'Bug problem 6', 'DE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(7, 'Bug problem 7', 'IE@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(8, 'Bug problem 8', 'MX@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(9, 'Bug problem 9', 'JP@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(10, 'Bug problem 10', 'FR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(11, 'Bug problem 11', 'GB@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(12, 'Bug problem 12', 'RU@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(13, 'Bug problem 13', 'NG@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-    createData(14, 'Bug problem 14', 'BR@mail.com', 'AU@mail.com', '01.23.2023', '01.21.2023', 'In progress'),
-  ]);
+
+  function getData(objectData) {
+    const arr = [];
+    let count = 0;
+    objectData.forEach((object) => {
+      arr.push(
+        createData(count, 
+          object.title,
+          object.assignedTo, 
+          object.assignedBy, 
+          object.deadline, 
+          object.issuedOn, 
+          object.status));
+      count++;
+    });
+    return arr;
+  }
+
+  const [rows, setRows] = useState(getData(objectData));
+
+  useEffect(() => {
+    setRows(getData(objectData));
+  }, [objectData]);
 
   const users = [{ id: 0, name: 'BR@mail.com' }, 
     { id: 1, name: 'AU@mail.com' },
