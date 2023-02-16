@@ -35,6 +35,7 @@ export default function IssuesOverview(props) {
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
   const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
   const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
+  const [username, setUsername] = useState('CURRENT USER\'S NAME NOT FOUND');
   
   // For Modal 1 - Create Issue
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -145,11 +146,14 @@ export default function IssuesOverview(props) {
         const deadlineFormatted = deadline.format('MM.DD.YYYY').toString();
         const currentDateFormatted = dayjs().format('MM.DD.YYYY').toString();
         const assignedToUser = users[assignedTo] ? users[assignedTo].name : 'COULD NOT FIND USER NAME';
+        const assignedToUsername = users[assignedTo] ? users[assignedTo].username : 'COULD NOT FIND USER NAME';
 
         setObjectData([...objectData, 
             { title: title, 
               assignedTo: assignedToUser,
+              assignedToUsername: assignedToUsername,
               assignedBy: currentUserName, 
+              assignedByUsername: username,
               deadline: deadlineFormatted, 
               issuedOn: currentDateFormatted, 
               status: status
@@ -225,23 +229,25 @@ export default function IssuesOverview(props) {
   function createData(
       id, 
       titleUnformatted, 
-      assignedToUnformatted, 
-      assignedByUnformatted, 
+      assignedToUnformatted,
+      assignedToUsername, 
+      assignedByUnformatted,
+      assignedByUsername, 
       deadline, 
       issuedOn, 
       statusUnformatted) {
     const title = <>
-        <Link key={'title-link: ' + id} color="inherit" to={"/issue-detail"}>
+        <Link key={'title-link: ' + id} color="inherit" to={"/issue-detail/" + id}>
           <b>{titleUnformatted}</b>
         </Link>
       </>
     const assignedTo = <>
-        <Link key={'assigned-to-link: ' + id} color="inherit" to={"/user-profile"}>
+        <Link key={'assigned-to-link: ' + id} color="inherit" to={"/user-profile/" + assignedToUsername}>
           {assignedToUnformatted}
         </Link>
       </>
     const assignedBy = <>
-        <Link key={'assigned-by-link: ' + id} color="inherit" to={"/user-profile"}>
+        <Link key={'assigned-by-link: ' + id} color="inherit" to={"/user-profile/" + assignedByUsername}>
           {assignedByUnformatted}
         </Link>
       </>
@@ -250,7 +256,7 @@ export default function IssuesOverview(props) {
         {statusUnformatted}
       </Typography></>
     const actions = <>
-        <Link key={'actions-link: ' + id} color="inherit" to={"/edit-issue"}>
+        <Link key={'actions-link: ' + id} color="inherit" to={"/edit-issue/" + id}>
           <EditIcon key={'edit: ' + id} sx={{ cursor: 'pointer', color: 'grey' }}/>
         </Link>
         <DeleteForeverIcon 
@@ -276,91 +282,121 @@ export default function IssuesOverview(props) {
   const [objectData, setObjectData] = useState([
     { title: 'Bug problem 0', 
       assignedTo: 'Kim@mail.com',
+      assignedToUsername: 'Kimberly Kim',
       assignedBy: 'IE@mail.com', 
+      assignedByUsername: 'Ivan Ethan',
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Assigned'
     }, { title: 'Bug problem 1', 
       assignedTo: 'Kim@mail.com',
+      assignedToUsername: 'Kimberly Kim',
       assignedBy: 'IE@mail.com', 
+      assignedByUsername: 'Ivan Ethan',
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Assigned'
     }, { title: 'Bug problem 2',
       assignedTo: 'John@mail.com',
+      assignedToUsername: 'John Johnson',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Completed'
     }, { title: 'Bug problem 3',
       assignedTo: 'Joseph@mail.com',
+      assignedToUsername: 'Joseph Hurl',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Approved'
     }, { title: 'Bug problem 4', 
       assignedTo: 'lchua@mail.com',
+      assignedToUsername: 'Larry Chua',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 5',
       assignedTo: 'AU@mail.com',
+      assignedToUsername: 'Andrew Umbra',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 6',
       assignedTo: 'DE@mail.com',
+      assignedToUsername: 'Dorthy Earth',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 7',
       assignedTo: 'IE@mail.com',
+      assignedToUsername: 'Ivan Earth',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 8',
       assignedTo: 'MX@mail.com',
+      assignedToUsername: 'Max Xeon',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 9',
       assignedTo: 'JP@mail.com',
+      assignedToUsername: 'John Peter',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 10',
       assignedTo: 'FR@mail.com',
+      assignedToUsername: 'Freddie Rud',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 11',
       assignedTo: 'GB@mail.com',
+      assignedToUsername: 'Gabe Brown',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 12',
       assignedTo: 'RU@mail.com',
+      assignedToUsername: 'Ruth Umbra',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress' 
     }, { title: 'Bug problem 13', 
       assignedTo: 'NG@mail.com',
+      assignedToUsername: 'Norman Gordon',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
     }, { title: 'Bug problem 14',
       assignedTo: 'BR@mail.com',
+      assignedToUsername: 'Brian Ruth',
       assignedBy: 'AU@mail.com', 
+      assignedByUsername: 'Andrew Umbra',
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
@@ -375,7 +411,9 @@ export default function IssuesOverview(props) {
         createData(count, 
           object.title,
           object.assignedTo, 
+          object.assignedToUsername,
           object.assignedBy, 
+          object.assignedByUsername,
           object.deadline, 
           object.issuedOn, 
           object.status));
@@ -390,10 +428,10 @@ export default function IssuesOverview(props) {
     setRows(getData(objectData));
   }, [objectData]);
 
-  const users = [{ id: 0, name: 'BR@mail.com' }, 
-    { id: 1, name: 'AU@mail.com' },
-    { id: 2, name: 'DE@mail.com' },
-    { id: 3, name: 'Lee@mail.com' }];
+  const users = [{ id: 0, name: 'BR@mail.com', username: 'Brian Ruth' }, 
+    { id: 1, name: 'AU@mail.com', username: 'Andrew Umbra' },
+    { id: 2, name: 'DE@mail.com', username: 'Dorthy Earth' },
+    { id: 3, name: 'Lee@mail.com', username: 'Lee Lee' }];
 
   const style = {
     position: 'absolute',

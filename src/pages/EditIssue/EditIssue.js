@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { blue, red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import { Container } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 // Date
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +19,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 
 export default function EditIssue(props) {
+  const location = useLocation(); // {pathname: '/cocktail/1234', search: '', hash: '', state: undefined}
+  const locationArray = location.pathname.split("/");
+  const pathnameIssueId = locationArray[locationArray.length - 1];
+  const [id, setId] = useState(pathnameIssueId);
   const [organizationName, setOrganizationName] = useState('ORGANIZATION NAME NOT FOUND');
   const [issueName, setIssueName] = useState('ISSUE NAME NOT FOUND');
   const [currentUserName, setCurrentUserName] = useState('CURRENT USER NAME NOT FOUND');
@@ -85,7 +89,7 @@ export default function EditIssue(props) {
         // Send request to create to database
 
           // If submission success:
-          navigate('/issue-detail', {state: null});
+          navigate('/issue-detail/' + id, {state: null});
 
     } else {
       setSubmitClicked(true);

@@ -92,7 +92,7 @@ function App() {
         </>,
     },
     {
-      path: "/edit-issue",
+      path: "/edit-issue/:id",
       element: 
         <> 
           <NavBar 
@@ -103,7 +103,7 @@ function App() {
         </>,
     },
     {
-      path: "/issue-detail",
+      path: "/issue-detail/:id",
       element: 
         <> 
           <NavBar 
@@ -114,7 +114,7 @@ function App() {
         </>,
     },
     {
-      path: "/user-profile",
+      path: "/user-profile/:username",
       element: 
         <> 
           <NavBar 

@@ -21,6 +21,7 @@ export default function NavBar(props) {
 
   const [userFirstNameLetter, setUserFirstNameLetter] = useState('');
   const [email, setEmail] = useState('EMAIL NOT FOUND');
+  const [username, setUsername] = useState('USERNAME NOT FOUND');
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -117,7 +118,7 @@ export default function NavBar(props) {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <Link to={"/user-profile"}>
+                <Link to={"/user-profile/" + username}>
                   <MenuItem onClick={handleClose}>
                     <Avatar /> Profile
                   </MenuItem>

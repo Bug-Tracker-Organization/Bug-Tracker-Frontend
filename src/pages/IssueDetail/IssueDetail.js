@@ -10,12 +10,17 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 export default function IssueDetail(props) {
-
-  const [id, setId] = useState(null);
+  const [username, setUsername] = useState('USERNAME NOT FOUND');
+  const [assignedToUsername, setAssignedToUsername] = useState('ASSIGNED TO USERNAME NOT FOUND');
+  const [assignedByUsername, setAssignedByUsername] = useState('ASSIGNED BY USERNAME NOT FOUND');
+  const location = useLocation(); // {pathname: '/cocktail/1234', search: '', hash: '', state: undefined}
+  const locationArray = location.pathname.split("/");
+  const pathnameIssueId = locationArray[locationArray.length - 1];
+  const [id, setId] = useState(pathnameIssueId);
   const [title, setTitle] = useState('TITLE NOT FOUND');
   const [description, setDescription] = useState('DESCRIPTION NOT FOUND');
   const [assignedTo, setAssignedTo] = useState('ASSIGNED TO NOT FOUND');
@@ -67,7 +72,7 @@ export default function IssueDetail(props) {
       <Paper key={'paper: ' + id} sx={{ width: '100%', overflow: 'hidden', marginBottom: 2 }}>
         <Container key={'container: ' + id} sx={{ marginTop: 2, marginBottom: 2 }}>
           <Typography key={'type0: ' + id}>
-            <Link key={'link1: ' + id} to={"/user-profile"}><b key={'b: ' + id}>{name}</b></Link> says:
+            <Link key={'link1: ' + id} to={"/user-profile/" + username}><b key={'b: ' + id}>{name}</b></Link> says:
               <span key={'span: ' + id} style={{ float: 'right' }}>
                 <EditIcon 
                   key={'icon1: ' + id} 
@@ -349,9 +354,9 @@ export default function IssueDetail(props) {
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <Container sx={{ marginTop: 2, marginBottom: 2 }}>
             <Typography>
-              Assigned to: <Link to={"/user-profile"}><b>{assignedTo}</b></Link>
+              Assigned to: <Link to={"/user-profile/" + assignedToUsername}><b>{assignedTo}</b></Link>
               <span style={{ float: 'right' }}>
-                <Link color="inherit" to={"/edit-issue"}>
+                <Link color="inherit" to={"/edit-issue/" + id}>
                   <EditIcon sx={{ cursor: 'pointer', color: 'grey' }}/>
                 </Link>
                 <DeleteForeverIcon 
@@ -364,7 +369,7 @@ export default function IssueDetail(props) {
               Deadline: <b>{deadline}</b>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
-              Assigned by: <Link to={"/user-profile"}><b>{assignedBy}</b></Link>
+              Assigned by: <Link to={"/user-profile/" + assignedByUsername}><b>{assignedBy}</b></Link>
             </Typography>
             <Typography sx={{ marginTop: 0.5 }}>
               Status: <span style={{ color: getStatusColor(status) }}>{status}</span>

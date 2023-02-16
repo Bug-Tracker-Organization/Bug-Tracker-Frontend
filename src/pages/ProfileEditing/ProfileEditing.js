@@ -95,7 +95,7 @@ export default function ProfileEditing(props) {
   }
 
   const handleCloseCreateIssueModal = () => {
-    navigate('/user-profile', {state: null});
+    navigate('/user-profile/' + username, {state: null});
   };
 
   const handleCreateIssue = () => {
@@ -105,7 +105,7 @@ export default function ProfileEditing(props) {
         // Send request to create to database
 
           // If submission success:
-          navigate('/user-profile', {state: null});
+          navigate('/user-profile/' + username, {state: null});
 
     } else {
       setSubmitClicked(true);
