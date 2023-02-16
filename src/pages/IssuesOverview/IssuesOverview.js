@@ -88,7 +88,7 @@ export default function IssuesOverview(props) {
   // Table
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [currentIssueId, setCurrentIssueId] = useState('');
+  const [currentIssueId, setCurrentIssueId] = useState(-1);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -122,8 +122,8 @@ export default function IssuesOverview(props) {
 
   // Modal 1 - Create issue
   const [openCreateIssueModal, setOpenCreateIssueModal] = React.useState(false);
-  const handleOpenCreateIssueModal = (event) => {
-    //setCurrentIssueId(event);
+
+  const handleOpenCreateIssueModal = () => {
     setOpenCreateIssueModal(true);
   };
   
@@ -149,7 +149,9 @@ export default function IssuesOverview(props) {
         const assignedToUsername = users[assignedTo] ? users[assignedTo].username : 'COULD NOT FIND USER NAME';
 
         setObjectData([...objectData, 
-            { title: title, 
+            { 
+              id: objectData.length, // need real id creation later
+              title: title, 
               assignedTo: assignedToUser,
               assignedToUsername: assignedToUsername,
               assignedBy: currentUserName, 
@@ -176,13 +178,25 @@ export default function IssuesOverview(props) {
   };
   
   const handleCloseDeleteIssueModal = () => setOpenDeleteIssueModal(false);
+
   const handleRemoveIssue = () => {
     // Send request to delete from database
 
     // Remove from table
     const newObjectData = [...objectData];
-    newObjectData.splice(currentIssueId, 1);
-    setObjectData(newObjectData);
+    let index = -1;
+
+    for (let i = 0; i < newObjectData.length; i++) {
+      if (newObjectData[i].id === currentIssueId) {
+        index = i;
+      }
+    }
+
+    if (index !== -1) {
+      newObjectData.splice(index, 1);
+      setObjectData(newObjectData);
+    }
+
     setOpenDeleteIssueModal(false);
   }
 
@@ -280,7 +294,9 @@ export default function IssuesOverview(props) {
   }
 
   const [objectData, setObjectData] = useState([
-    { title: 'Bug problem 0', 
+    { 
+      id: 0,
+      title: 'Bug problem 0', 
       assignedTo: 'Kim@mail.com',
       assignedToUsername: 'Kimberly Kim',
       assignedBy: 'IE@mail.com', 
@@ -288,7 +304,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Assigned'
-    }, { title: 'Bug problem 1', 
+    }, { 
+      id: 1,
+      title: 'Bug problem 1', 
       assignedTo: 'Kim@mail.com',
       assignedToUsername: 'Kimberly Kim',
       assignedBy: 'IE@mail.com', 
@@ -296,7 +314,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Assigned'
-    }, { title: 'Bug problem 2',
+    }, { 
+      id: 2,
+      title: 'Bug problem 2',
       assignedTo: 'John@mail.com',
       assignedToUsername: 'John Johnson',
       assignedBy: 'AU@mail.com', 
@@ -304,7 +324,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Completed'
-    }, { title: 'Bug problem 3',
+    }, { 
+      id: 3,
+      title: 'Bug problem 3',
       assignedTo: 'Joseph@mail.com',
       assignedToUsername: 'Joseph Hurl',
       assignedBy: 'AU@mail.com', 
@@ -312,7 +334,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'Approved'
-    }, { title: 'Bug problem 4', 
+    }, { 
+      id: 4,
+      title: 'Bug problem 4', 
       assignedTo: 'lchua@mail.com',
       assignedToUsername: 'Larry Chua',
       assignedBy: 'AU@mail.com', 
@@ -320,7 +344,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 5',
+    }, { 
+      id: 5,
+      title: 'Bug problem 5',
       assignedTo: 'AU@mail.com',
       assignedToUsername: 'Andrew Umbra',
       assignedBy: 'AU@mail.com', 
@@ -328,7 +354,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 6',
+    }, { 
+      id: 6,
+      title: 'Bug problem 6',
       assignedTo: 'DE@mail.com',
       assignedToUsername: 'Dorthy Earth',
       assignedBy: 'AU@mail.com', 
@@ -336,7 +364,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 7',
+    }, { 
+      id: 7,
+      title: 'Bug problem 7',
       assignedTo: 'IE@mail.com',
       assignedToUsername: 'Ivan Earth',
       assignedBy: 'AU@mail.com', 
@@ -344,7 +374,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 8',
+    }, { 
+      id: 8,
+      title: 'Bug problem 8',
       assignedTo: 'MX@mail.com',
       assignedToUsername: 'Max Xeon',
       assignedBy: 'AU@mail.com', 
@@ -352,7 +384,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 9',
+    }, { 
+      id: 9,
+      title: 'Bug problem 9',
       assignedTo: 'JP@mail.com',
       assignedToUsername: 'John Peter',
       assignedBy: 'AU@mail.com', 
@@ -360,7 +394,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.21.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 10',
+    }, { 
+      id: 10,
+      title: 'Bug problem 10',
       assignedTo: 'FR@mail.com',
       assignedToUsername: 'Freddie Rud',
       assignedBy: 'AU@mail.com', 
@@ -368,7 +404,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 11',
+    }, { 
+      id: 11,
+      title: 'Bug problem 11',
       assignedTo: 'GB@mail.com',
       assignedToUsername: 'Gabe Brown',
       assignedBy: 'AU@mail.com', 
@@ -376,7 +414,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 12',
+    }, { 
+      id: 12,
+      title: 'Bug problem 12',
       assignedTo: 'RU@mail.com',
       assignedToUsername: 'Ruth Umbra',
       assignedBy: 'AU@mail.com', 
@@ -384,7 +424,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress' 
-    }, { title: 'Bug problem 13', 
+    }, { 
+      id: 13,
+      title: 'Bug problem 13', 
       assignedTo: 'NG@mail.com',
       assignedToUsername: 'Norman Gordon',
       assignedBy: 'AU@mail.com', 
@@ -392,7 +434,9 @@ export default function IssuesOverview(props) {
       deadline: '01.23.2023', 
       issuedOn: '01.23.2023', 
       status: 'In progress'
-    }, { title: 'Bug problem 14',
+    }, { 
+      id: 14,
+      title: 'Bug problem 14',
       assignedTo: 'BR@mail.com',
       assignedToUsername: 'Brian Ruth',
       assignedBy: 'AU@mail.com', 
@@ -405,10 +449,10 @@ export default function IssuesOverview(props) {
 
   function getData(objectData) {
     const arr = [];
-    let count = 0;
     objectData.forEach((object) => {
       arr.push(
-        createData(count, 
+        createData(
+          object.id,
           object.title,
           object.assignedTo, 
           object.assignedToUsername,
@@ -417,7 +461,6 @@ export default function IssuesOverview(props) {
           object.deadline, 
           object.issuedOn, 
           object.status));
-      count++;
     });
     return arr;
   }
