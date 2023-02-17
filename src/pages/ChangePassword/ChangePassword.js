@@ -80,6 +80,7 @@ export default function ChangePassword(props) {
             <TextField
               required
               fullWidth
+              type='password'
               id="currentPassword"
               label="Current Password"
               name="currentPassword"

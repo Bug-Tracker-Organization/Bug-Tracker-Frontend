@@ -3,13 +3,12 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Template source: https://github.com/mui/material-ui/blob/v5.11.6/docs/data/material/getting-started/templates/sign-up/SignUp.js
 
@@ -17,7 +16,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="/">
+      <Link color="inherit" to="/">
         Issue Manager
       </Link>{' '}
       {new Date().getFullYear()}
@@ -194,7 +193,7 @@ export default function Register(props) {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/sign-in" variant="body2">
+                <Link to="/sign-in" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

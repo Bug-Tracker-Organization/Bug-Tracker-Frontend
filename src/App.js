@@ -32,139 +32,117 @@ function App() {
     localStorage.setItem('login', JSON.stringify(userLoggedIn));
   }
 
-  const router = ([
-    {
-      path: "/",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <Home isUserLoggedIn={isUserLoggedIn}/> 
-        </>,
-    },
-    {
-      path: "/sign-in",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <SignIn 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-        </>,
-    },
-    {
-      path: "/register",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <Register isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/forgot-password",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <ForgotPassword isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/issues-overview",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <IssuesOverview isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/edit-issue/:id",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <EditIssue isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/issue-detail/:id",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <IssueDetail isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/user-profile/:username",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <UserProfile isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/profile-editing",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <ProfileEditing isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/change-password",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <ChangePassword isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-    {
-      path: "/user-management",
-      element: 
-        <> 
-          <NavBar 
-            isUserLoggedIn={isUserLoggedIn}
-            onUserLoginStatusChange={handleUserLoggedInChange}
-          />
-          <UserManagement isUserLoggedIn={isUserLoggedIn}/>
-        </>,
-    },
-  ]);
-
   return (
     <>
-      <NavBar/>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/" element={
+          <>
+            <NavBar isUserLoggedIn={isUserLoggedIn}
+              onUserLoginStatusChange={handleUserLoggedInChange}
+            />
+            <Home isUserLoggedIn={isUserLoggedIn}/>
+          </>} 
+        />
+        <Route path="/sign-in" element={
+          <>
+            <NavBar isUserLoggedIn={isUserLoggedIn}
+              onUserLoginStatusChange={handleUserLoggedInChange}
+            />
+            <SignIn isUserLoggedIn={isUserLoggedIn}
+              onUserLoginStatusChange={handleUserLoggedInChange}
+            />
+          </>} 
+        />
+        <Route path="/register" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <Register isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
+        <Route path="/forgot-password" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <ForgotPassword isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
+        <Route path="/issues-overview" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <IssuesOverview isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
+        <Route path="/edit-issue/:id" element={
+          <> 
+            <NavBar 
+              isUserLoggedIn={isUserLoggedIn}
+              onUserLoginStatusChange={handleUserLoggedInChange}
+            />
+            <EditIssue isUserLoggedIn={isUserLoggedIn}/>
+          </>
+          } 
+        />
+        <Route path="/issue-detail/:id" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <IssueDetail isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
+        <Route path="/user-profile/:username" element={
+          <> 
+            <NavBar 
+              isUserLoggedIn={isUserLoggedIn}
+              onUserLoginStatusChange={handleUserLoggedInChange}
+            />
+            <UserProfile isUserLoggedIn={isUserLoggedIn}/>
+          </>
+          } 
+        />
+        <Route path="/profile-editing" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <ProfileEditing isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
+          <Route path="/change-password" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <ChangePassword isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
+          <Route path="/user-management" element={
+            <> 
+              <NavBar 
+                isUserLoggedIn={isUserLoggedIn}
+                onUserLoginStatusChange={handleUserLoggedInChange}
+              />
+              <UserManagement isUserLoggedIn={isUserLoggedIn}/>
+            </>
+          } 
+        />
       </Routes>
     </>
   );
