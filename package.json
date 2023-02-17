@@ -1,5 +1,6 @@
 {
   "name": "bug-tracker-frontend",
+  "homepage": "https://bug-tracker-organization.github.io/Bug-Tracker-Frontend/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "dayjs": "^1.11.7",
+    "gh-pages": "^5.0.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "moment": "^2.29.4",
@@ -24,6 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
