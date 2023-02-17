@@ -14,9 +14,9 @@ import ProfileEditing from './pages/ProfileEditing/ProfileEditing';
 import ChangePassword from './pages/ChangePassword/ChangePassword';
 import UserManagement from './pages/UserManagement/UserManagement';
 import {
-  createBrowserRouter,
-  RouterProvider, HashRouter
-} from 'react-router-dom';
+  Routes,
+  Route,
+} from "react-router-dom";
 
 function App() {
   
@@ -32,7 +32,7 @@ function App() {
     localStorage.setItem('login', JSON.stringify(userLoggedIn));
   }
 
-  const router = createBrowserRouter([
+  const router = ([
     {
       path: "/",
       element: 
@@ -160,7 +160,13 @@ function App() {
   ]);
 
   return (
-    <>test</>
+    <>
+      <NavBar/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sign-in" element={<SignIn />} />
+      </Routes>
+    </>
   );
 }
 
