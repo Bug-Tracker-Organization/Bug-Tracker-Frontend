@@ -15,7 +15,7 @@ import ChangePassword from './pages/ChangePassword/ChangePassword';
 import UserManagement from './pages/UserManagement/UserManagement';
 import {
   createBrowserRouter,
-  RouterProvider,
+  RouterProvider, HashRouter
 } from 'react-router-dom';
 
 function App() {
@@ -160,7 +160,7 @@ function App() {
   ]);
 
   return (
-    <RouterProvider router={router} />
+    <>test</>
   );
 }
 
