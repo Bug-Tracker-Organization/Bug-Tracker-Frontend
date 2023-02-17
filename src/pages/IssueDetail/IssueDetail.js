@@ -270,7 +270,7 @@ export default function IssueDetail(props) {
               marginTop: 2,
               marginRight: 1,
             }}>
-            Create Issue
+            Edit Issue
           </Button>
           <Button variant="contained" onClick={handleCloseEditCommentModal} 
             sx={{ 
