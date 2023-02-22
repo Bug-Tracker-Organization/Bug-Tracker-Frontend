@@ -1,0 +1,21 @@
+.home-logo-name {
+  margin-top: 100px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 50em) {
+  .home-logo-name {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 25px;
+  }
+
+  .home-description {
+    font-size: 12px;
+  }
+
+  .home-img {
+    height: 100px;
+    width: 100px;
+  }
+}

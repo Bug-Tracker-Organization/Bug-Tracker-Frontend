@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './Home.css';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -19,17 +20,14 @@ export default function Home(props) {
       <Grid item xs={12}>
         <Grid container justifyContent="center" spacing={2}>
           <Grid key={1} item>
-            <Container
-                sx={{
-                  height: 500,
-                  width: 400,
-                }}
-              >
-              <Typography variant="h3" component="div" sx={{ flexGrow: 1, marginTop: 10, marginBottom: 2 }}>
-                Issue Manager
+            <Container>
+              <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
+                <div className="home-logo-name">Issue Manager</div>
               </Typography>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginBottom: 2  }}>
-                This is a web application built with the MERN stack.
+                <span className="home-description">
+                  This is a web application built with the MERN stack.
+                </span>
               </Typography>
               <Link className='navbar' color="inherit" to={"/sign-in"}>
                 <Button variant="contained" sx={{ flexGrow: 1, marginRight: 2  }}>
@@ -44,9 +42,8 @@ export default function Home(props) {
             </Container>
           </Grid>
           <Grid key={0} item>
-            <Container
-            >
-              <img src={require('../../assets/logo.png')} />
+            <Container>
+              <img className="home-img" src={require('../../assets/logo.png')} />
             </Container>
           </Grid>
         </Grid>
