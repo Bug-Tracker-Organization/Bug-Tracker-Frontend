@@ -626,9 +626,9 @@ export default function IssuesOverview(props) {
           </Typography>
         </Toolbar>
         <Toolbar>
-        <TextField size="small" id="outlined-search" label="Search" type="search" onChange={handleSearchBarChange} sx={{ flexGrow: 1, position: 'absolute', left: 0,  }}/>
+        <TextField id="outlined-search" label="Search" type="search" onChange={handleSearchBarChange} sx={{ flexGrow: 1, position: 'absolute', left: 0,  }}/>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, position: 'absolute', right: 0 }}>
-            <Button size="small" className="new-issue-btn" onClick={handleOpenCreateIssueModal} 
+            <Button className="new-issue-btn" onClick={handleOpenCreateIssueModal} 
               variant="contained" sx={{ backgroundColor: blue[500], color: 'white', }}>
               + New Issue
             </Button>
