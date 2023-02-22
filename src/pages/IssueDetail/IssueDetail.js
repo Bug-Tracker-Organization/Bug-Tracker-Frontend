@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './IssueDetail.css';
 import { Container } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -226,11 +227,6 @@ export default function IssueDetail(props) {
   }
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -245,7 +241,7 @@ export default function IssueDetail(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className='issue-detail-modal'>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Edit Comment from <i>{editCurrentCommentName}</i> on <i>{editCurrentCommentCreatedDateAndTime}</i> 
             {editCurrentCommentEditedDateAndTime ? ' edited on ' : null}
@@ -291,7 +287,7 @@ export default function IssueDetail(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className='issue-detail-modal'>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Remove Issue
           </Typography>
@@ -321,7 +317,7 @@ export default function IssueDetail(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className='issue-detail-modal'>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Remove Comment
           </Typography>
