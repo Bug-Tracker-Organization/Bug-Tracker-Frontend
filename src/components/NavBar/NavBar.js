@@ -45,10 +45,7 @@ export default function NavBar(props) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" className="navbar-typography-logo">
-            <Link color="inherit" to={"/"}>
-              <img className="navbar-logo" src={require('../../assets/logo.png')} /> 
-            </Link>
-            <span className="logo-name"> Issue Manager</span>
+            <Link color="inherit" to={"/"}><img className="navbar-logo" src={require('../../assets/logo.png')} /><span className="logo-name"> Issue Manager</span></Link>
           </Typography>
           {!props.isUserLoggedIn ? <>
             <Link className='navbar' color="inherit" to={"/sign-in"}>
