@@ -14,3 +14,22 @@ a:link, a:visited, a:hover, a:active {
   height: 18px;
   width: 18px;
 }
+
+.navbar-typography-logo {
+  flex-grow: 1;
+}
+
+@media (max-width: 50em) {
+  .navbar-logo {
+    height: 14px;
+    width: 14px;
+  }
+
+  .logo-name {
+    font-size: 14px;
+  }
+
+  .navbar-email {
+    font-size: 1px;
+  }
+}
