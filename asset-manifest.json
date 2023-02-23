@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/Bug-Tracker-Frontend/static/css/main.e8e92e62.css",
-    "main.js": "/Bug-Tracker-Frontend/static/js/main.68d54fc1.js",
+    "main.css": "/Bug-Tracker-Frontend/static/css/main.cb765126.css",
+    "main.js": "/Bug-Tracker-Frontend/static/js/main.6be38937.js",
     "static/js/787.b19adc0d.chunk.js": "/Bug-Tracker-Frontend/static/js/787.b19adc0d.chunk.js",
     "static/media/logo.png": "/Bug-Tracker-Frontend/static/media/logo.05ddc5ac5b33180bc8a4.png",
     "static/media/logo.svg": "/Bug-Tracker-Frontend/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Bug-Tracker-Frontend/index.html",
-    "main.e8e92e62.css.map": "/Bug-Tracker-Frontend/static/css/main.e8e92e62.css.map",
-    "main.68d54fc1.js.map": "/Bug-Tracker-Frontend/static/js/main.68d54fc1.js.map",
+    "main.cb765126.css.map": "/Bug-Tracker-Frontend/static/css/main.cb765126.css.map",
+    "main.6be38937.js.map": "/Bug-Tracker-Frontend/static/js/main.6be38937.js.map",
     "787.b19adc0d.chunk.js.map": "/Bug-Tracker-Frontend/static/js/787.b19adc0d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e8e92e62.css",
-    "static/js/main.68d54fc1.js"
+    "static/css/main.cb765126.css",
+    "static/js/main.6be38937.js"
   ]
 }
