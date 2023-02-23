@@ -241,7 +241,7 @@ export default function IssueDetail(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className='issue-detail-modal'>
+        <Box sx={style} className='issue-detail-modal issue-detail-edit-comment-modal'>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Edit Comment from <i>{editCurrentCommentName}</i> on <i>{editCurrentCommentCreatedDateAndTime}</i> 
             {editCurrentCommentEditedDateAndTime ? ' edited on ' : null}

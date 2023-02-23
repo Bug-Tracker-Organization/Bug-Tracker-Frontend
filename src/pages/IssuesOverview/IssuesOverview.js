@@ -491,7 +491,7 @@ export default function IssuesOverview(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className='issues-overview-modal'>
+        <Box sx={style} className='issues-overview-modal issues-overview-create-issue-modal'>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             New Issue
           </Typography>

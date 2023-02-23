@@ -4,7 +4,12 @@
   width: 25%;
   border: '2px solid #000';
   box-shadow: 24;
-} 
+  overflow-y: auto;
+}
+
+.issues-overview-create-issue-modal {
+  height: 70%;
+}
 
 @media (max-width: 70em) {
   .issues-overview-modal {

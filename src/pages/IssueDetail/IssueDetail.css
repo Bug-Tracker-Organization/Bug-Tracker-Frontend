@@ -4,7 +4,12 @@
   width: 25%;
   border: '2px solid #000';
   box-shadow: 24;
+  overflow-y: auto;
 } 
+
+.issue-detail-edit-comment-modal {
+  height: 40%;
+}
 
 @media (max-width: 70em) {
   .issue-detail-modal {
