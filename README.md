@@ -117,10 +117,8 @@ Tracks bugs or issues that an organization has.
 ## GIF Demo?
 
 ## Schema 
-[This section will be completed in Unit 9]
+[TBD]
 ### Models
-[Add table of models]
+[TBD]
 ### Networking
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+[TBD]
