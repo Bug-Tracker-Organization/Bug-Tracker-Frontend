@@ -79,11 +79,14 @@ export default function IssuesOverview(props) {
     }
   }
 
+  /*
+  // Change this back later
   useEffect(() => {
     if (!props.isUserLoggedIn) {
       navigate('/', {state: null});
     }
   }, [props.isUserLoggedIn]);
+  */
 
   // Table
   const [page, setPage] = React.useState(0);
