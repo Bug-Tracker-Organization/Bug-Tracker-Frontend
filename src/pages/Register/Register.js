@@ -51,7 +51,9 @@ export default function Register(props) {
   const [errorOrganizationMessage, setErrorOrganizationMessage] = useState('This field is required');
   const errorEmail = submitClicked && (email === '' || !isEmailAvailable);
   const [errorEmailMessage, setErrorEmailMessage] = useState('This field is required');
-  const errorPassword = submitClicked && password === '';
+  const [isPasswordTheSameAsEmail, setIsPasswordTheSameAsEmail] = useState(false);
+  const errorPassword = submitClicked && (password === '' || isPasswordTheSameAsEmail);
+  const [errorPasswordMessage, setErrorPasswordMessage] = useState('This field is required');
   const errorRepeatPassword = submitClicked && (repeatPassword === '' || repeatPassword !== password);
 
   if (props.isUserLoggedIn) {
@@ -162,11 +164,22 @@ export default function Register(props) {
   }
 
   const handleSubmit = async (event) => {
-    if (organization !== ''
+
+    if (email === password) {
+      setIsPasswordTheSameAsEmail(true);
+      setErrorPasswordMessage('Email and password should not be the same!');
+    } else if (organization !== ''
       && email !== '' 
       && password !== '' 
       && repeatPassword !== '' 
       && password === repeatPassword) {
+
+        // Passed the top condition,
+        // so reset it
+        if (isPasswordTheSameAsEmail) {
+          setIsPasswordTheSameAsEmail(false);
+          setErrorPasswordMessage('This field is required');
+        }
 
         // Get all user data here just in case user tries to change the data
         // while the submission process is still taking place.abs
@@ -265,7 +278,7 @@ export default function Register(props) {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  helperText={errorPassword ? "This field is required" : null}
+                  helperText={errorPassword ? errorPasswordMessage : null}
                   error={errorPassword}
                   onChange={handleOnChange}
                 />
