@@ -191,7 +191,7 @@ export default function Register(props) {
 
           !isOrganizationCreationSuccessful && alert('Account created successfully, but not organization. '
             + 'Please try creating an organization again using your old email and password');
-          isOrganizationCreationSuccessful && navigate('/issues-overview', {state: null});
+          isOrganizationCreationSuccessful && navigate('/sign-in', {state: null});
         }
     }
 
@@ -204,7 +204,7 @@ export default function Register(props) {
       const isOrganizationCreationSuccessful = 
         await createOrganization(organization, await getNewUserId(userCreatedEmail));
 
-      isOrganizationCreationSuccessful && navigate('/issues-overview', {state: null});
+      isOrganizationCreationSuccessful && navigate('/sign-in', {state: null});
     }
 
     // If email or organization name are blank, reset the error messages
