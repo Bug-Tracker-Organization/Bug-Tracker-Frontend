@@ -9,6 +9,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
+const client = axios.create({
+  baseURL: `${API_URL}`
+});
 
 // Template source: https://github.com/mui/material-ui/blob/v5.11.6/docs/data/material/getting-started/templates/sign-up/SignUp.js
 
@@ -30,13 +37,20 @@ const theme = createTheme();
 export default function Register(props) {
 
   const [organization, setOrganization] = useState('');
+  const [isOrganizationAvailable, setIsOrganizationAvailable] = useState(true);
   const [email, setEmail] = useState('');
+  const [isEmailAvailable, setIsEmailAvailable] = useState(true);
   const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');   
   const [submitClicked, setSubmitClicked] = useState(false);
+  const [wasUserCreated, setWasUserCreated] = useState(false);
+  const [wasOrganizationCreated, setWasOrganizationCreated] = useState(false);
+  const [userCreatedEmail, setUserCreatedEmail] = useState('');
   const navigate = useNavigate();
-  const errorOrganization = submitClicked && organization === '';
-  const errorEmail = submitClicked && email === '';
+  const errorOrganization = submitClicked && (organization === '' || !isOrganizationAvailable);
+  const [errorOrganizationMessage, setErrorOrganizationMessage] = useState('This field is required');
+  const errorEmail = submitClicked && (email === '' || !isEmailAvailable);
+  const [errorEmailMessage, setErrorEmailMessage] = useState('This field is required');
   const errorPassword = submitClicked && password === '';
   const errorRepeatPassword = submitClicked && (repeatPassword === '' || repeatPassword !== password);
 
@@ -67,49 +81,137 @@ export default function Register(props) {
     }
   }
 
-  const handleSubmit = (event) => {
-    if (email !== '' 
+  async function getNewUserId(email) {
+    const responseResult = await client.get(`/catalog/exists/user/${email}`).then((response) => {
+      if (response.data.found) {
+        return response ? (response.data ? response.data.user_id : null) : null;
+      }
+      return null;
+    }).catch(err => {
+      console.log(err);
+      return null;
+    });
+    return responseResult;
+  }
+
+  async function createOrganization(name, founder_id) {
+    const responseResult = await client.post(`/catalog/register/organization`, {
+      name: name,
+      founder: founder_id,
+    }).then((response) => {
+      setWasOrganizationCreated(true);
+      return true;
+    }).catch(err => {
+      const message = err ? (err.response ? err.response.data : "Unknown error") : "Unknown error";
+      alert(message);
+      setWasOrganizationCreated(false);
+      return false;
+    });
+    return responseResult;
+  }
+
+  async function createUser(email, password) {
+    const responseResult = await client.post(`/catalog/register/user`, {
+      email: email,
+      password: password
+    }).then((response) => {
+      setWasUserCreated(true);
+      setUserCreatedEmail(email);
+      return true;
+    }).catch(err => {
+      const message = err ? (err.response ? err.response.data : "Unknown error") : "Unknown error";
+      alert(message);
+      setWasUserCreated(false);
+      return false;
+    });
+    return responseResult;
+  }
+
+  async function isUserEmailAvailable(email) {
+    const responseResult = await client.get(`/catalog/exists/user/${email}`).then((response) => {
+      if (response.data.found) {
+        setErrorEmailMessage('Email is already in use! Please login.');
+        setIsEmailAvailable(false);
+        return false;
+      }
+      setErrorEmailMessage('This field is required');
+      setIsEmailAvailable(true);
+      return true;
+    }).catch(err => {
+      console.log(err);
+      return false;
+    });
+    return responseResult;
+  }
+
+  async function isUserOrganizationNameAvailable(name) {
+    const responseResult = await client.get(`/catalog/exists/organization/${name}`).then((response) => {
+      if (response.data.found) {
+        setErrorOrganizationMessage('Organization name has been taken! Please create another name.');
+        setIsOrganizationAvailable(false);
+        return false;
+      }
+      setErrorOrganizationMessage('This field is required');
+      setIsOrganizationAvailable(true);
+      return true;
+    }).catch(err => {
+      console.log(err);
+      return false;
+    });
+    return responseResult;
+  }
+
+  const handleSubmit = async (event) => {
+    if (organization !== ''
+      && email !== '' 
       && password !== '' 
       && repeatPassword !== '' 
       && password === repeatPassword) {
-      fetch('apiLink', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(getPOSTBody())
-      }).then(response => {
-        console.log('Sign in successful with status: ' + (response ? response.status : "No status found"));
-        navigate('/issues-overview', {state: null});
-      }).catch(err => {
-        alert('Submission unsuccessful');
-        console.log(err);
-      });
+
+        // Get all user data here just in case user tries to change the data
+        // while the submission process is still taking place.abs
+        const currentUser = {
+          "email": email,
+          "organizationName": organization,
+          "password": password,
+        }
+
+        // Check if email is not taken
+        const isUserEmailAvailableResults = await isUserEmailAvailable(currentUser.email);
+        // Check if organization is not taken
+        const isUserOrganizationAvailableResults = await isUserOrganizationNameAvailable(currentUser.organizationName);
+        
+        if (isUserEmailAvailableResults && isUserOrganizationAvailableResults) {
+          
+          const isUserCreationSuccessful = await createUser(currentUser.email, currentUser.password);
+          const isOrganizationCreationSuccessful = 
+            isUserCreationSuccessful ?
+            await createOrganization(currentUser.organizationName, await getNewUserId(currentUser.email)) : 
+            false;
+
+          !isOrganizationCreationSuccessful && alert('Account created successfully, but not organization. '
+            + 'Please try creating an organization again using your old email and password');
+          isOrganizationCreationSuccessful && navigate('/issues-overview', {state: null});
+        }
     }
 
+    /* 
+      Use case in which user was created successfully, but not organization
+      Gives the user a chance to link their user model with an organization
+      before they have to call support. 
+    */
+    if (wasUserCreated && !wasOrganizationCreated) {
+      const isOrganizationCreationSuccessful = 
+        await createOrganization(organization, await getNewUserId(userCreatedEmail));
+
+      isOrganizationCreationSuccessful && navigate('/issues-overview', {state: null});
+    }
+
+    // If email or organization name are blank, reset the error messages
+    email === '' && setErrorEmailMessage('This field is required');
+    organization === '' && setErrorOrganizationMessage('This field is required');
     setSubmitClicked(true);
-    // Page will refresh and the submission will fail without preventDefault()
-    event.preventDefault();
   };
-
-  function getPOSTBody() {
-    // Type check all inputs
-    // If any type is incorrect, make the value null
-    const organizationForBody = isString(organization) ? organization : null;
-    const emailForBody = isString(email) ? email : null;
-    const passwordForBody = isString(password) ? password : null;
-
-    return {
-      organization: organizationForBody,
-      email: emailForBody,
-      password: passwordForBody,
-    }
-  }
-
-  function isString(value) {
-    return (typeof value === 'string' || value instanceof String);
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -126,7 +228,7 @@ export default function Register(props) {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -136,7 +238,7 @@ export default function Register(props) {
                   label="Organization Name"
                   name="organization"
                   autoComplete="organization"
-                  helperText={errorOrganization ? "This field is required" : null}
+                  helperText={errorOrganization ? errorOrganizationMessage : null}
                   error={errorOrganization}
                   onChange={handleOnChange}
                 />
@@ -149,7 +251,7 @@ export default function Register(props) {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  helperText={errorEmail ? "This field is required" : null}
+                  helperText={errorEmail ? errorEmailMessage : null}
                   error={errorEmail}
                   onChange={handleOnChange}
                 />
@@ -184,7 +286,8 @@ export default function Register(props) {
               </Grid>
             </Grid>
             <Button
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
