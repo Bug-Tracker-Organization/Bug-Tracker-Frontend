@@ -43,6 +43,14 @@ function App() {
             <Home isUserLoggedIn={isUserLoggedIn}/>
           </>} 
         />
+        <Route path="/verify/:email/:token" element={
+          <>
+            <NavBar isUserLoggedIn={isUserLoggedIn}
+              onUserLoginStatusChange={handleUserLoggedInChange}
+            />
+            <Home isUserLoggedIn={isUserLoggedIn}/>
+          </>} 
+        />
         <Route path="/sign-in" element={
           <>
             <NavBar isUserLoggedIn={isUserLoggedIn}
