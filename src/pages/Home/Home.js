@@ -26,7 +26,7 @@ export default function Home(props) {
 
   React.useEffect(() => {
     // Email verification will be done on the Home page
-    if (window.location.hash !== '#/' && !madeRequest) {
+    if (window.location.hash !== '' && window.location.hash !== '#/' && !madeRequest) {
       setMadeRequest(true);
       const email = window.location.hash.split('/')[2];
       const token = window.location.hash.split('/')[3];      
